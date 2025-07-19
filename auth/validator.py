@@ -18,7 +18,6 @@ def get_current_token_payload(
     token: str = Depends(auth2_bearer),
 ) -> dict:
     """returns payload from jwt"""
-    print(token)
     try:
         payload = decode_jwt(token=token)
         return payload
