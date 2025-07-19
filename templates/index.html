@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Английские слова</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Learn english words</h1>
+
+
+
+    <div class="card">
+
+      <div class="counters">
+        <div id="learned-counter">Выучено: {{ word.learned }}</div>
+      </div>
+
+      <div id="batch-progress"></div>
+      <div class="word">
+        <p id="word">Loading...</p>
+        <p id="translation"></p>
+      </div>
+      <div class="buttons">
+        <button id="knowBtn">Я знаю это</button>
+        <button id="dontKnowBtn">Я не знаю это</button>
+      </div>
+    </div>
+    <div id="session-end" class="hidden">
+      <p>🎉 Поздравляю, ты завершил сессию!</p>
+      <button id="next-session-btn">Следующая сессия</button>
+    </div>
+  </div>
+
+    <script>
+        window.wordsList = {{ words | tojson }};
+    </script>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>
