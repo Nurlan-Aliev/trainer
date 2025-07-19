@@ -1,0 +1,28 @@
+services:
+  database:
+    container_name: database
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - .postgres:/var/lib/postgresql/data
+
+
+  backend:
+    container_name: backend
+    build:
+      .
+    depends_on:
+      - database
+    volumes:
+      - .:/trainer
+    ports:
+      - "80:8000"
+    restart: always
+    env_file:
+      - .env
+    entrypoint: ./entrypoint.sh
