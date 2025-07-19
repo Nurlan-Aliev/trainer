@@ -13,9 +13,7 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_HOST: str
 
-    DB_ECHO: bool
     SECRET_KEY: str
-    HOST: list[str]
 
     access_token_expire_min: int = 36000
     algorithm: str = "HS256"
