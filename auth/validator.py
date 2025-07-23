@@ -4,22 +4,23 @@ from auth.jwt_helper import decode_jwt
 from auth.schemas import UserAuthSchema
 from auth.db_user import get_user
 from pydantic import EmailStr
-from fastapi.security import OAuth2PasswordBearer
-
+from fastapi.security import HTTPBearer
 import bcrypt
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import db_helper
 
 
-auth2_bearer = OAuth2PasswordBearer(tokenUrl="token")
+http_bearer = HTTPBearer(auto_error=False)
 
 
 def get_current_token_payload(
-    token: str = Depends(auth2_bearer),
+    token: HTTPBearer = Depends(http_bearer),
 ) -> dict:
     """returns payload from jwt"""
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     try:
-        payload = decode_jwt(token=token)
+        payload = decode_jwt(token=token.credentials)
         return payload
     except jwt.exceptions.InvalidTokenError as e:
         raise HTTPException(
