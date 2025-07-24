@@ -1,6 +1,11 @@
 from pydantic import BaseModel
 
 
-class WordSchemas(BaseModel):
-    id: int
+class BaseWord(BaseModel):
     word: str
+    translate_ru: str | None = None
+    translate_az: str | None = None
+
+
+class WordSchemas(BaseWord):
+    id: int

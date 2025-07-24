@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.crud import get_10_books, get_word_learned, get_count_learned_word
-from api.schemas import WordSchemas
+from api import crud
+from api.schemas import WordSchemas, BaseWord
 from auth.validator import get_current_token_payload
 from database import db_helper
 
@@ -11,12 +11,25 @@ router = APIRouter()
 
 
 @router.get("/")
-async def get_10_words(session: AsyncSession = Depends(db_helper.session_dependency)):
+async def get_10_words(
+    skip: int = 0,
+    user: dict | None = Depends(get_current_token_payload),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
     """
     Get 10 words to learn
     :return: list of 10 words
     """
-    return await get_10_books(session)
+    word_list = await crud.get_10_books(skip, user.get("email"), session)
+    return [
+        WordSchemas(
+            id=word.id,
+            word=word.word,
+            translate_az=word.translate_az,
+            translate_ru=word.translate_ru,
+        )
+        for word in word_list
+    ]
 
 
 @router.post("/learned")
@@ -29,6 +42,27 @@ async def learned_word(
     add param word to the learned list
     :return: count of learned word
     """
-    await get_word_learned(word, user["email"], session)
-    count = await get_count_learned_word(user["email"], session)
+    await crud.get_word_learned(word, user["email"], session)
+    count = await crud.get_count_learned_word(user["email"], session)
     return count
+
+
+@router.post("/add_word")
+async def add_word(
+    word: BaseWord,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    """
+    add a new words in the list
+    """
+    await crud.add_new_word(word.word, session)
+    return "word added"
+
+
+@router.patch("/update")
+async def update_word(
+    update_data: WordSchemas,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word = await crud.update_word_db(update_data, session)
+    return word

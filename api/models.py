@@ -5,7 +5,7 @@ from database import Base
 
 
 class Word(Base):
-    word: Mapped[str] = mapped_column(primary_key=True)
+    word: Mapped[str]
     translate_ru: Mapped[str] = mapped_column(nullable=True)
     translate_az: Mapped[str] = mapped_column(nullable=True)
 
