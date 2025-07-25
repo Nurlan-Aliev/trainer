@@ -8,7 +8,7 @@ from auth.crud import create_user
 
 
 http_bearer = HTTPBearer(auto_error=False)
-router = APIRouter(tags=["login"], dependencies=[Depends(http_bearer)])
+router = APIRouter(dependencies=[Depends(http_bearer)])
 
 
 @router.post("/sign_in")
