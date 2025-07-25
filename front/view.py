@@ -7,10 +7,20 @@ templates = Jinja2Templates(directory="templates")
 
 
 @router.get("/")
-async def get_home_page(request: Request):
+def get_home_page(request: Request):
 
     return templates.TemplateResponse(
         "index.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@router.get("/sign_in")
+def sign_up(request: Request):
+    return templates.TemplateResponse(
+        "sign_in.html",
         {
             "request": request,
         },

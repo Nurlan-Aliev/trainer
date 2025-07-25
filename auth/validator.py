@@ -8,24 +8,30 @@ from fastapi.security import HTTPBearer
 import bcrypt
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import db_helper
+from fastapi import HTTPException, status, Depends, Request
 
 
+UNAUTHORIZED = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED, detail="You need to log in"
+)
 http_bearer = HTTPBearer(auto_error=False)
 
 
 def get_current_token_payload(
-    token: HTTPBearer = Depends(http_bearer),
+    request: Request,
 ) -> dict:
-    """returns payload from jwt"""
+    token = request.cookies.get("access_token")
     if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        raise UNAUTHORIZED
     try:
-        payload = decode_jwt(token=token.credentials)
+        payload = decode_jwt(token=token)
         return payload
     except jwt.exceptions.InvalidTokenError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail=f"invalid token error"
         )
+    except AttributeError:
+        raise UNAUTHORIZED
 
 
 async def get_user_by_token_sub(
@@ -40,22 +46,6 @@ async def get_user_by_token_sub(
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="user not found",
-    )
-
-
-def is_admin(payload: dict = Depends(get_current_token_payload)):
-    if is_active(payload) and payload.get("status") == "admin":
-        return payload
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN, detail="You don’t have permission"
-    )
-
-
-def is_active(payload: dict = Depends(get_current_token_payload)):
-    if payload.get("is_active"):
-        return payload
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN, detail="user is not active"
     )
 
 
