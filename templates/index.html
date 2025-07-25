@@ -1,44 +1,38 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Английские слова</title>
-  <link rel="stylesheet" href="/static/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-  <div class="container">
-    <h1>Learn english words</h1>
 
-
-
+  <main class="container">
+    <h1>Lern word</h1>
     <div class="card">
-
-      <div class="counters">
-        <div id="learned-counter">Выучено: {{ word.learned }}</div>
+      <div class="info">
+        <div id="word" class="word"></div>
+        <div id="trans" class="word"></div>
       </div>
+      
 
-      <div id="batch-progress"></div>
-      <div class="word">
-        <p id="word">Loading...</p>
-        <p id="translation"></p>
-      </div>
       <div class="buttons">
-        <button id="knowBtn">Я знаю это</button>
-        <button id="dontKnowBtn">Я не знаю это</button>
+        <button class="i_know">Уже знаю</button>
+        <button class="to_learn">Надо выучить</button>
+        
       </div>
-    </div>
-    <div id="session-end" class="hidden">
-      <p>🎉 Поздравляю, ты завершил сессию!</p>
-      <button id="next-session-btn">Следующая сессия</button>
-    </div>
-  </div>
+      <div class="next_session">
+        <button class="next-session">К следующей сессии</button>
+      </div>
 
-    <script>
-        window.wordsList = {{ words | tojson }};
-    </script>
+
+
+    </div>
+  </main>
 
   <script src="/static/script.js"></script>
 </body>
