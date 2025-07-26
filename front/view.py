@@ -10,7 +10,29 @@ templates = Jinja2Templates(directory="templates")
 def get_home_page(request: Request):
 
     return templates.TemplateResponse(
-        "index.html",
+        "homepage.html",
+        {
+            "request": request,
+        },
+    )
+
+
+
+@router.get("/learn")
+def learn_word(request: Request):
+
+    return templates.TemplateResponse(
+        "learn.html",
+        {
+            "request": request,
+        },
+    )
+
+
+@router.get("/sign_up")
+def sign_up(request: Request):
+    return templates.TemplateResponse(
+        "sign_up.html",
         {
             "request": request,
         },
@@ -18,7 +40,7 @@ def get_home_page(request: Request):
 
 
 @router.get("/sign_in")
-def sign_up(request: Request):
+def sign_in(request: Request):
     return templates.TemplateResponse(
         "sign_in.html",
         {

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Learn word</title>
+<link rel="stylesheet" href="/static/learn.css">
+{% endblock %}
+
+{% block h1 %}<h1>Lern word</h1>{% endblock %}
+
+{% block card %}
+<div class="info">
+  <div id="word" class="word"></div>
+  <div id="trans" class="word"></div>
+</div>
+
+
+<div class="buttons">
+  <button class="i_know">Already know</button>
+  <button class="to_learn">Learn this</button>
+
+</div>
+<div class="next_session">
+  <button class="next-session">Next session</button>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/script.js"></script>
+{% endblock %}
