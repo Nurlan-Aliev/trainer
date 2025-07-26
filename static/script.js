@@ -19,7 +19,7 @@ const nextSession  = document.querySelector('.next-session');
 
 function showWord() {
   if (currentIndex >= sessionSize || currentIndex >= words.length) {
-    wordEl.textContent = 'Сессия завершена';
+    wordEl.textContent = 'Session finished 🎉';
     knowBtn.style.display = 'none';
     learnBtn.style.display = 'none';
     nextSession.style.display = 'inline-block';
