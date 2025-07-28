@@ -17,8 +17,11 @@ async def create_user(
     hash_pass = hash_password(password)
     user = await get_user(login, session)
     if re_password != password:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail='Passwords do not match')
-    
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Passwords do not match",
+        )
+
     if user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
