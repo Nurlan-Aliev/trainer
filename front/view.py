@@ -32,7 +32,7 @@ def learn_word(request: Request):
 @router.get("/sign_up")
 def sign_up(request: Request):
     return templates.TemplateResponse(
-        "sign_up.html",
+        "auth/sign_up.html",
         {
             "request": request,
         },
@@ -42,7 +42,7 @@ def sign_up(request: Request):
 @router.get("/sign_in")
 def sign_in(request: Request):
     return templates.TemplateResponse(
-        "sign_in.html",
+        "auth/sign_in.html",
         {
             "request": request,
         },
