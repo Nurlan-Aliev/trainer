@@ -10,6 +10,6 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-app.include_router(api_router, prefix="/api", tags=['api'])
-app.include_router(auth_router, prefix="/auth", tags=['login'])
-app.include_router(front_router, tags=['front'])
+app.include_router(api_router, prefix="/api", tags=["api"])
+app.include_router(auth_router, prefix="/auth", tags=["login"])
+app.include_router(front_router, tags=["front"])
