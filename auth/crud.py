@@ -9,19 +9,22 @@ from auth.validator import hash_password, auth_user
 
 async def create_user(
     name: str = Form(),
-    surname: str = Form(),
     login: EmailStr = Form(),
     password: str = Form(),
+    re_password: str = Form(),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     hash_pass = hash_password(password)
     user = await get_user(login, session)
+    if re_password != password:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail='Passwords do not match')
+    
     if user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="user already exist",
         )
-    new_user = User(name=name, surname=surname, email=login, password=hash_pass)
+    new_user = User(name=name, email=login, password=hash_pass)
     session.add(new_user)
     await session.commit()
     return await auth_user(login, password, session)
