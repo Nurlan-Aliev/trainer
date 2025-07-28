@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api import crud
 from api.schemas import WordSchemas, BaseWord
-from auth.validator import get_current_token_payload
+from auth.validator import is_current_token
 from database import db_helper
 
 
@@ -13,7 +13,7 @@ router = APIRouter()
 @router.get("/")
 async def get_10_words(
     skip: int = 0,
-    user: dict | None = Depends(get_current_token_payload),
+    user: dict = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     """
@@ -35,7 +35,7 @@ async def get_10_words(
 @router.post("/learned")
 async def learned_word(
     word: WordSchemas,
-    user: dict | None = Depends(get_current_token_payload),
+    user: dict | None = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     """
