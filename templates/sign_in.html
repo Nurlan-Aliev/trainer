@@ -1,19 +1,29 @@
 {% extends "base.html" %}
 {% block head %}
 <title>Sign In</title>
-<link rel="stylesheet" href="/static/sign_in.css">
+<link rel="stylesheet" href="/static/auth.css">
 {% endblock %}
 
 {% block h1 %}<h1 class="name">Sign in</h1>{% endblock %}
 {% block card %}
 <div class="container_sign_in">
     <form action="/auth/sign_in" method="post">
-        <input type="text" name="login" class="input_data" placeholder="Enter your email" required>
-        <input type="password" name="password" class="input_data" placeholder="Enter your password" required>
+        <div class="input-data-container">
+            <input type="text" name="login" class="input_data" placeholder="Enter your email" required>
+        </div>
+        <div class="input-data-container">
+            <input type="password" name="password" id='input-password' class="input_data" placeholder="Enter your password" required>
+            <img src="/static/images/eye/hide.svg" alt="hide" class="eye-image-pass"
+            onclick="hideShowSwicher(inputPassword, eyeImagePass)">
+        </div>
+
         <button type="submit" class="submit-button">Sign in</button>
     </form>
     <a href="/sign_up" class="sign_up">Sign up</a>
 </div>
 
+{% endblock %}
 
+{% block script %}
+<script src="/static/sign_up.js"></script>
 {% endblock %}

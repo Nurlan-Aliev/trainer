@@ -1,0 +1,73 @@
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.name {
+    text-align: center;
+}
+
+.input_data {
+    height: 40px;
+    width: 300px;
+    padding: 0 7px;
+    border-radius: 5px;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    background-color: rgb(250, 250, 250);
+
+
+}
+
+.submit-button {
+    background-color: rgb(88, 129, 224);
+    margin: 10px;
+}
+
+.sign_up {
+    margin: 10px 0;
+    font-size: 25px;
+
+    &:hover {
+        font-size: 28px;
+    }
+
+    &:active {
+        font-size: 25px;
+    }
+}
+
+.container_sign_in {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.eye-image-re-pass,
+.eye-image-pass {
+    width: 30px;
+    height: 30px;
+}
+
+.input-data-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid;
+    margin: 7px 0;
+    padding-right: 7px;
+}
+
+
+.errorPassword{
+    color:red;
+    font-size: 23px;
+}
