@@ -14,13 +14,14 @@ async def create_user(
     re_password: str = Form(),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    hash_pass = hash_password(password)
-    user = await get_user(login, session)
     if re_password != password:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Passwords do not match",
         )
+
+    hash_pass = hash_password(password)
+    user = await get_user(login, session)
 
     if user:
         raise HTTPException(

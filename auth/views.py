@@ -22,14 +22,13 @@ def auth_user_issue_jwt(
 
 
 @router.post("/sign_up")
-async def sign_up(request: Request, user: UserAuthSchema = Depends(create_user)):
+def sign_up(request: Request, user: UserAuthSchema = Depends(create_user)):
     return sign_in(request, user)
 
 
-@router.get("/users/me")
-def read_current_user(
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(http_bearer)],
-):
-    if not credentials:
-        return "error"
-    return {"scheme": credentials.scheme, "credentials": credentials.credentials}
+@router.get('/sign_out')
+def sign_out(request: Request):
+    redirect_url = request.url_for("get_home_page")
+    response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
+    response.delete_cookie('access_token')
+    return response
