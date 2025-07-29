@@ -45,9 +45,21 @@ nextSession.addEventListener('click', async() =>  {
 )
 
 knowBtn.addEventListener('click', () => {
+  let word = words[currentIndex];
+  fetch(`http://127.0.0.1:8000/api/learned`, {
+  method: "POST", 
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    "word": word.word,
+    "id": word.id
+  })
+})
   currentIndex++;
   showWord();
 });
+
 
 learnBtn.addEventListener('click', () => {
   currentIndex++;
