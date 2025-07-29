@@ -22,6 +22,11 @@ header{
     margin: 0 20px;
 }
 
+.user-icon{
+    width: 25px;
+    height: 25px;
+}
+
 .container{
   height: 90vh;
   display: flex;
