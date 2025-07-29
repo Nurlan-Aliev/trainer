@@ -6,7 +6,7 @@ from database import Base
 
 class User(Base):
     name: Mapped[str] = mapped_column(String(30))
-    surname: Mapped[str] = mapped_column(String(30))
+    surname: Mapped[str] = mapped_column(String(30), nullable=True)
     password: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
     status: Mapped[str] = mapped_column(String(10), default="user")
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
