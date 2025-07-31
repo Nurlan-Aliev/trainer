@@ -39,8 +39,6 @@ nextSession.addEventListener('click', async() =>  {
   learnBtn.style.display = 'inline-block';
   nextSession.style.display = 'none'
   showWord();
-  
-
 }
 )
 
@@ -51,10 +49,7 @@ knowBtn.addEventListener('click', () => {
   headers: {
     "Content-Type": "application/json"
   },
-  body: JSON.stringify({
-    "word": word.word,
-    "id": word.id
-  })
+  body: JSON.stringify(word)
 })
   currentIndex++;
   showWord();
