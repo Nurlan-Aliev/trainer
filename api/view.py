@@ -42,7 +42,7 @@ async def learned_word(
     add param word to the learned list
     :return: count of learned word
     """
-    await crud.get_word_learned(word, user["email"], session)
+    await crud.add_word_learned(word, user["email"], session)
 
 
 @router.post("/add_word")
