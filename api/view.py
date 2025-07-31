@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from api import crud
 from api.schemas import WordSchemas, BaseWord
 from auth.validator import is_current_token
 from database import db_helper
 
 
-router = APIRouter()
+router = APIRouter(tags=["api"])
 
 
 @router.get("/")
