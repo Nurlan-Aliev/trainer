@@ -43,8 +43,6 @@ async def learned_word(
     :return: count of learned word
     """
     await crud.get_word_learned(word, user["email"], session)
-    count = await crud.get_count_learned_word(user["email"], session)
-    return count
 
 
 @router.post("/add_word")
@@ -55,7 +53,7 @@ async def add_word(
     """
     add a new words in the list
     """
-    await crud.add_new_word(word.word, session)
+    await crud.add_new_word(word, session)
     return "word added"
 
 
@@ -64,5 +62,8 @@ async def update_word(
     update_data: WordSchemas,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
+    """
+    update words
+    """
     word = await crud.update_word_db(update_data, session)
     return word
