@@ -8,13 +8,16 @@ from config import settings
 router = APIRouter()
 
 
-@router.get("/")
-def get_home_page(
+@router.get("/sign_up")
+def sign_up(
     request: Request,
     user: dict | None = Depends(is_user_logged_in),
 ):
+    if user:
+        redirect_url = request.url_for("get_home_page")
+        return RedirectResponse(redirect_url)
     return settings.templates.TemplateResponse(
-        "homepage.html",
+        "auth/sign_up.html",
         {
             "user": user,
             "request": request,
@@ -22,16 +25,17 @@ def get_home_page(
     )
 
 
-@router.get("/learn")
-def learn_word(
+@router.get("/sign_in")
+def sign_in(
     request: Request,
     user: dict | None = Depends(is_user_logged_in),
 ):
-    if not user:
-        redirect_url = request.url_for("sign_in")
+    if user:
+        redirect_url = request.url_for("get_home_page")
         return RedirectResponse(redirect_url)
+
     return settings.templates.TemplateResponse(
-        "learn.html",
+        "auth/sign_in.html",
         {
             "user": user,
             "request": request,
