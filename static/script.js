@@ -16,6 +16,7 @@ const knowBtn   = document.querySelector('.i_know');
 const learnBtn  = document.querySelector('.to_learn');
 const nextSession  = document.querySelector('.next-session');
 
+const api = `http://192.168.1.81:8000`
 
 function showWord() {
   if (currentIndex >= sessionSize || currentIndex >= words.length) {
@@ -33,7 +34,7 @@ function showWord() {
 
 nextSession.addEventListener('click', async() =>  {
   count = count + 10
-  words = await getArray(`http://127.0.0.1:8000/api/?skip=${count}`)
+  words = await getArray(`${api}/api/?skip=${count}`)
   currentIndex = 0;
   knowBtn.style.display = 'inline-block';
   learnBtn.style.display = 'inline-block';
@@ -44,7 +45,7 @@ nextSession.addEventListener('click', async() =>  {
 
 knowBtn.addEventListener('click', () => {
   let word = words[currentIndex];
-  fetch(`http://127.0.0.1:8000/api/learned`, {
+  fetch(`${api}/api/learned`, {
   method: "POST", 
   headers: {
     "Content-Type": "application/json"
@@ -62,7 +63,7 @@ learnBtn.addEventListener('click', () => {
 });
 
 async function start() {
-  words = await getArray(`http://127.0.0.1:8000/api/?skip=${count}`);
+  words = await getArray(`${api}/api/?skip=${count}`);
   showWord();
 }
 
