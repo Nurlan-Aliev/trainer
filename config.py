@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     access_token_expire_min: int = 36000
     algorithm: str = "HS256"
 
-    templates = Jinja2Templates(directory="templates")
+    templates: Jinja2Templates = Jinja2Templates(directory="templates")
 
     @property
     def db_connect(self):
