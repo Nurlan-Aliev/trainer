@@ -4,7 +4,7 @@ from pydantic import EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import db_helper
 from auth.models import User
-from auth.validator import hash_password, auth_user
+from auth import validator
 
 
 async def create_user(
@@ -20,7 +20,7 @@ async def create_user(
             detail="Passwords do not match",
         )
 
-    hash_pass = hash_password(password)
+    hash_pass = validator.hash_password(password)
     user = await get_user(login, session)
 
     if user:
@@ -31,4 +31,4 @@ async def create_user(
     new_user = User(name=name, email=login, password=hash_pass)
     session.add(new_user)
     await session.commit()
-    return await auth_user(login, password, session)
+    return await validator.auth_user(login, password, session)

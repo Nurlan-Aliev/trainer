@@ -13,7 +13,7 @@ def sign_in(request: Request, user: UserAuthSchema):
     response.set_cookie(
         key="access_token",
         value=access_token,
-        secure=True,
+        secure=False,
         httponly=True,
         max_age=3600,
     )

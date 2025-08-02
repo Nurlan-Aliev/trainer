@@ -1,9 +1,7 @@
 import jwt
-from fastapi import Form
 from auth.jwt_helper import decode_jwt
 from auth.schemas import UserAuthSchema
 from auth.db_user import get_user
-from pydantic import EmailStr
 from fastapi.security import HTTPBearer
 import bcrypt
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -32,30 +30,16 @@ async def get_user_by_token_sub(
     )
 
 
-async def validate_auth_user(
-    login: EmailStr = Form(),
-    password: str = Form(),
-    session: AsyncSession = Depends(db_helper.session_dependency),
-):
-    return await auth_user(login, password, session)
-
-
 async def auth_user(
     login,
     password,
     session,
 ):
-    unauthed_exp = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid username or password"
-    )
+
     if not (user := await get_user(login, session)):
-        raise unauthed_exp
+        return None
     if not validate_password(password=password, hashed_password=user.password):
-        raise unauthed_exp
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User is not active"
-        )
+        return None
     return user
 
 
