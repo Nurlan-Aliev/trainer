@@ -5,9 +5,12 @@
     {% if user %}
     <div class="menu">
         <div><a href="/learn">Learn word</a></div>
-        <div><a href="#">Train</a></div>
+        <div><a href="/train_list">Train</a></div>
     </div>
-    <img src="/static/images/user.png" alt="" class="user-icon">
+    <a href="/auth/sign_out">
+        <img src="/static/images/user.png" alt="" class="user-icon">
+    </a>
+    
 
     {% else %}
 

@@ -16,7 +16,7 @@ const knowBtn   = document.querySelector('.i_know');
 const learnBtn  = document.querySelector('.to_learn');
 const nextSession  = document.querySelector('.next-session');
 
-const api = `http://192.168.1.81:8000`
+const api = `http://127.0.0.1:8000`
 
 function showWord() {
   if (currentIndex >= sessionSize || currentIndex >= words.length) {

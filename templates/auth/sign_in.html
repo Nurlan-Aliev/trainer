@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "auth/auth_base.html" %}
 {% block head %}
 <title>Sign In</title>
-<link rel="stylesheet" href="/static/auth.css">
+<link rel="stylesheet" href="/static/auth/auth.css">
 {% endblock %}
 
 {% block h1 %}<h1 class="name">Sign in</h1>{% endblock %}
@@ -25,5 +25,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="/static/sign_up.js"></script>
+<script src="/static/auth/sign_up.js"></script>
 {% endblock %}

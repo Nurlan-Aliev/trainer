@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Train</title>
+<link rel="stylesheet" href="/static/vocab_tests/vocab_test_list.css">
+{% endblock %}
+
+{% block main %}
+<div class="vocab-container">
+    <a href="/constructor" class="test_link">
+        <div class="vocab-card-test">
+            <p>Constructor</p>
+            <img src="/static/images/vocab/constructor.svg" alt="" class="img_constructor">
+        </div>
+    </a>
+    <a href="#" class="test_link">
+        <div class="vocab-card-test">
+            <p>Translate</p>
+            <img src="/static/images/vocab/translate.svg" alt="" class="test_img">
+        </div>
+    </a>
+    <a href="#" class="test_link">
+        <div class="vocab-card-test">
+            <p>Reverse Translate</p>
+            <img src="/static/images/vocab/rev_translate.svg" alt="" class="test_img">
+        </div>
+    </a>
+</div>
+{% endblock %}
