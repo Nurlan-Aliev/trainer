@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Depends
 from auth.validator import is_user_logged_in
-from fastapi.responses import RedirectResponse
+
 
 from config import settings
 
@@ -15,23 +15,6 @@ def get_home_page(
 ):
     return settings.templates.TemplateResponse(
         "homepage.html",
-        {
-            "user": user,
-            "request": request,
-        },
-    )
-
-
-@router.get("/learn")
-def learn_word(
-    request: Request,
-    user: dict | None = Depends(is_user_logged_in),
-):
-    if not user:
-        redirect_url = request.url_for("sign_in")
-        return RedirectResponse(redirect_url)
-    return settings.templates.TemplateResponse(
-        "learn.html",
         {
             "user": user,
             "request": request,
