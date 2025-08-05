@@ -1,7 +1,6 @@
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.models import Word, LearnedWord, WordsToLearn
-from api.schemas import WordSchemas
 from api.vocab_tests.models import UserWordTestResult
 
 COUNT_OF_TEST = 3

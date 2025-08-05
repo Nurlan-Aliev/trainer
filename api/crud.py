@@ -1,45 +1,99 @@
 from typing import Sequence
-from sqlalchemy import select, exists
+from sqlalchemy import select, exists, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
-from api.models import Word, LearnedWord
-from api.schemas import WordSchemas, BaseWord
+from sqlalchemy.orm import selectinload
+
+from api.models import Word, LearnedWord, WordsToLearn
+from api import schemas
 from auth.crud import get_user
+from typing import Type
+
+from auth.models import User
 
 
-async def get_10_books(
+async def get_10_words(
     skip: int, user_email: str, session: AsyncSession
 ) -> Sequence[Word]:
     """
     get 10 random words which is not learned
     """
     user = await get_user(user_email, session)
-    subquery = select(1).where(
-        LearnedWord.word_id == Word.id, LearnedWord.user_id == user.id
+
+    subquery_learned = select(1).where(
+        and_(
+            LearnedWord.word_id == Word.id,
+            LearnedWord.user_id == user.id,
+        )
+    )
+
+    subquery_to_learn = select(1).where(
+        and_(
+            WordsToLearn.word_id == Word.id,
+            WordsToLearn.user_id == user.id,
+        )
     )
     stmt = (
-        select(Word).where(~exists(subquery)).order_by(Word.id).offset(skip).limit(10)
+        select(Word)
+        .where(~exists(subquery_learned))
+        .where(~exists(subquery_to_learn))
+        .order_by(Word.id)
+        .offset(skip)
+        .limit(10)
     )
     result = await session.scalars(stmt)
     words = result.all()
     return words
 
 
-async def add_word_learned(
-    word: WordSchemas, user_email: str, session: AsyncSession
+async def get_10_word_for_learn(
+    user_email: str, session: AsyncSession
+) -> Sequence[WordsToLearn]:
+    """
+    get 10 random words which is not learned
+    """
+    user = await get_user(user_email, session)
+
+    stmt = (
+        select(WordsToLearn)
+        .options(selectinload(WordsToLearn.word))
+        .where(WordsToLearn.user_id == user.id)
+        .order_by(func.random())
+        .limit(10)
+    )
+    result = await session.scalars(stmt)
+    words = result.all()
+    return words
+
+
+async def get_word_to_learn(
+    word: schemas.WordSchemas,
+    user: User,
+    table: Type[LearnedWord] | Type[WordsToLearn],
+    session: AsyncSession,
+):
+
+    stmt = select(table).where(table.word_id == word.id).where(table.user_id == user.id)
+    return await session.scalar(stmt)
+
+
+async def insert_word(
+    word: schemas.WordSchemas,
+    user: User,
+    table: Type[LearnedWord] | Type[WordsToLearn],
+    session: AsyncSession,
 ) -> None:
     """
     add word to learned table
     """
-    user = await get_user(user_email, session)
-    learned_word = LearnedWord(
+    added_word = table(
         user_id=user.id,
         word_id=word.id,
     )
-    session.add(learned_word)
+    session.add(added_word)
     await session.commit()
 
 
-async def add_new_word(word: BaseWord, session: AsyncSession) -> None:
+async def add_new_word(word: schemas.BaseWord, session: AsyncSession) -> None:
     """
     add new word
     """
@@ -52,7 +106,9 @@ async def add_new_word(word: BaseWord, session: AsyncSession) -> None:
     await session.commit()
 
 
-async def update_word_db(update_data: WordSchemas, session: AsyncSession) -> None:
+async def update_word_db(
+    update_data: schemas.WordSchemas, session: AsyncSession
+) -> None:
     """
     add translate for word
     """
