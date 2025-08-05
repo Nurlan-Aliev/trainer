@@ -1,8 +1,4 @@
-async function getArray(url) {
-  const response = await fetch(url);
-  const array = await response.json();
-  return array;
-}
+const api = `http://127.0.0.1:8000`
 
 const sessionSize = 10;
 let count         = 0
@@ -16,7 +12,24 @@ const knowBtn   = document.querySelector('.i_know');
 const learnBtn  = document.querySelector('.to_learn');
 const nextSession  = document.querySelector('.next-session');
 
-const api = `http://127.0.0.1:8000`
+
+async function getArray(url) {
+  const response = await fetch(url);
+  const array = await response.json();
+  return array;
+}
+
+
+function sendWord(word, url){
+  fetch(url, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(word)
+})}
+
+
 
 function showWord() {
   if (currentIndex >= sessionSize || currentIndex >= words.length) {
@@ -44,20 +57,15 @@ nextSession.addEventListener('click', async() =>  {
 )
 
 knowBtn.addEventListener('click', () => {
-  let word = words[currentIndex];
-  fetch(`${api}/api/learned`, {
-  method: "POST", 
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(word)
-})
+  sendWord(words[currentIndex], `${api}/api/learned`)
   currentIndex++;
   showWord();
 });
 
 
 learnBtn.addEventListener('click', () => {
+  sendWord(words[currentIndex], `${api}/api/to_learn`)
+  console.log(1)
   currentIndex++;
   showWord();
 });
