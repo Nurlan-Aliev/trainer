@@ -9,12 +9,18 @@
 
 <div class="card_container">
 
-    <div class="word">word</div>
-    <input type="text" class="input_data" maxlength="15">
-    <button class="button_data">Send</button>
-    <div class="next_session">
-        <button class="next-session">Next session</button>
+    <div class="word_card">
+        <div class="word_to_send"></div>
+        <input type="text" class="spell"/>
+        <button class="send_word_button">Send</button>
+        <div class="next_session">
+            <button class="next-session">Next session</button>
+        </div>
     </div>
 </div>
 
+{% endblock %}
+
+{% block script %}
+<script src="/static/vocab_tests/constructor.js"></script>
 {% endblock %}

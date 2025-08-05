@@ -1,6 +1,6 @@
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from api.models import Word, LearnedWord
+from api.models import Word, LearnedWord, WordsToLearn
 from api.schemas import WordSchemas
 from api.vocab_tests.models import UserWordTestResult
 
@@ -8,10 +8,16 @@ COUNT_OF_TEST = 3
 
 
 async def get_word(
-    word_id: int,
+    word_idx: int,
+    user_idx: int,
     session: AsyncSession,
 ):
-    stmt = select(Word).where(Word.id == word_id)
+    print(word_idx, user_idx)
+    stmt = (
+        select(WordsToLearn)
+        .where(WordsToLearn.word_id == word_idx)
+        .where(WordsToLearn.user_id == user_idx)
+    )
     word = await session.scalar(stmt)
     return word
 
@@ -55,3 +61,5 @@ async def is_learned(
     if test_count == COUNT_OF_TEST:
         stmt = LearnedWord(user_id=user["id"], word_id=word.id)
         session.add(stmt)
+        stmt = WordsToLearn(user_id=user["id"], word_id=word.id)
+        await session.delete(stmt)

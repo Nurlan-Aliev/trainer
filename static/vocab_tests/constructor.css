@@ -1,40 +1,63 @@
 .card_container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 280px;
-    width: 360px;
-    min-width: 300px;
-    background-color: rgb(250, 250, 250);
-    border-radius: 15px;
-    padding: 20px;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
 }
 
-.word {
-    font-size: 50px;
-
-}
-
-.input_data {
-    padding: 8px;
-    font-size: 32px;
-    border-radius: 15px;
-    border: none;
-    border-bottom: solid 1px;
+.word_card {
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
     text-align: center;
-
+    max-width: 400px;
+    width: 90%;
 }
 
-.button_data {
-    font-size: 25px;
-    background-color: rgb(88, 129, 224);
+.word_card .word_to_send {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
 }
 
-.word,
-.input_data,
-.button_data {
-    margin: 20px;
+.spell {
+    text-align: center;
+    width: 100%;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 2rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.spell:focus {
+    border-color: #6c8cff;
+}
+
+.send_word_button {
+    background-color: #6c8cff;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+
+    &:hover {
+        background-color: #5a76db;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
 }
 
 .next-session{
