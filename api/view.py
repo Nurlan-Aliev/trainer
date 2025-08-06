@@ -61,28 +61,6 @@ async def to_learn_word(
         await crud.insert_word(word, user, WordsToLearn, session)
 
 
-@router.get("/to_learn")
-async def get_10_words_for_test(
-    user: dict = Depends(is_current_token),
-    session: AsyncSession = Depends(db_helper.session_dependency),
-):
-    """
-    Get 10 words to learn
-    :return: list of 10 words for test
-    """
-    word_list = await crud.get_10_word_for_learn(user.get("email"), session)
-    data = [
-        schemas.WordSchemas(
-            id=to_learn.id,
-            word=to_learn.word.word,
-            translate_az=to_learn.word.translate_az,
-            translate_ru=to_learn.word.translate_ru,
-        )
-        for to_learn in word_list
-    ]
-    return data
-
-
 @router.post("/add_word")
 async def add_word(
     word: schemas.BaseWord,

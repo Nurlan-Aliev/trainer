@@ -66,8 +66,8 @@ a{
   text-decoration: none;
   color: black;
   transition: 0.5s;
-  
-  &:hover{
+}
+
+.menu div a:hover{
     color: rgb(11, 95, 134);
   }
-}

@@ -45,26 +45,6 @@ async def get_10_words(
     return words
 
 
-async def get_10_word_for_learn(
-    user_email: str, session: AsyncSession
-) -> Sequence[WordsToLearn]:
-    """
-    get 10 random words which is not learned
-    """
-    user = await get_user(user_email, session)
-
-    stmt = (
-        select(WordsToLearn)
-        .options(selectinload(WordsToLearn.word))
-        .where(WordsToLearn.user_id == user.id)
-        .order_by(func.random())
-        .limit(10)
-    )
-    result = await session.scalars(stmt)
-    words = result.all()
-    return words
-
-
 async def get_word_to_learn(
     word: schemas.WordSchemas,
     user: User,

@@ -1,7 +1,12 @@
-from sqlalchemy import select, func
+from typing import Sequence
+from sqlalchemy import select, func, and_, exists
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.models import Word, LearnedWord, WordsToLearn
 from api.vocab_tests.models import UserWordTestResult
+from sqlalchemy.orm import joinedload, selectinload
+
+from api.vocab_tests.my_enum import Test
+from auth.db_user import get_user
 
 COUNT_OF_TEST = 3
 
@@ -11,11 +16,11 @@ async def get_word(
     user_idx: int,
     session: AsyncSession,
 ):
-    print(word_idx, user_idx)
     stmt = (
         select(WordsToLearn)
         .where(WordsToLearn.word_id == word_idx)
         .where(WordsToLearn.user_id == user_idx)
+        .options(joinedload(WordsToLearn.word))
     )
     word = await session.scalar(stmt)
     return word
@@ -62,3 +67,30 @@ async def is_learned(
         session.add(stmt)
         stmt = WordsToLearn(user_id=user["id"], word_id=word.id)
         await session.delete(stmt)
+
+
+async def get_10_word_for_learn(
+    user_email: str, test: Test, session: AsyncSession
+) -> Sequence[WordsToLearn]:
+    """
+    get 10 random words which is not learned
+    """
+    user = await get_user(user_email, session)
+    subquery = select(1).where(
+        and_(
+            UserWordTestResult.word_id == WordsToLearn.word_id,
+            UserWordTestResult.user_id == WordsToLearn.user_id,
+            UserWordTestResult.test == test,
+        )
+    )
+    stmt = (
+        select(WordsToLearn)
+        .options(selectinload(WordsToLearn.word))
+        .where(~exists(subquery))
+        .where(WordsToLearn.user_id == user.id)
+        .order_by(func.random())
+        .limit(10)
+    )
+    result = await session.scalars(stmt)
+    words = result.all()
+    return words
