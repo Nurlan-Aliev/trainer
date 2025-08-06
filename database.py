@@ -1,3 +1,4 @@
+import re
 from asyncio import current_task
 from datetime import datetime, timezone
 from sqlalchemy import DateTime
@@ -14,7 +15,7 @@ from config import settings
 class Base(DeclarativeBase):
     @declared_attr.directive
     def __tablename__(cls):
-        return f"{cls.__name__.lower()}s"
+        return re.sub(r"(?<!^)([A-Z])", r"_\1", cls.__name__).lower() + "s"
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
