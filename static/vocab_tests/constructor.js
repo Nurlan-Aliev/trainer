@@ -71,7 +71,7 @@ function showWord() {
 }
 
 nextSessionContainer.addEventListener('click', async () => {
-    words = await getArray(`${api}/api/to_learn?test_type=spelling`);
+    words = await getArray(`${api}/api/constructor`);
 
     currentIndex = 0;
     wordInput.style.display = 'inline-block';
@@ -122,7 +122,7 @@ sendBtn.addEventListener('click', () => {
 });
 
 async function start() {
-    words = await getArray(`${api}/api/to_learn?test_type=spelling`);
+    words = await getArray(`${api}/api/constructor`);
     showWord();
 }
 

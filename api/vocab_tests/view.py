@@ -27,9 +27,8 @@ async def make_vocab_test(
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
 
-@router.get("/to_learn")
+@router.get("/constructor")
 async def get_10_words_for_test(
-    test_type: Test,
     user: dict = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
@@ -37,7 +36,7 @@ async def get_10_words_for_test(
     Get 10 words to learn
     :return: list of 10 words for test
     """
-    word_list = await crud.get_10_word_for_learn(user, test_type, session)
+    word_list = await crud.get_10_word_for_learn(user, Test.spelling.value, session)
     data = [
         schemas.ConstructorSchema(
             id=to_learn.word_id,
@@ -55,7 +54,7 @@ async def get_words_translate(
     user: dict = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    word_list = await crud.get_10_word_for_learn(user, Test.translate_ru.v, session)
+    word_list = await crud.get_10_word_for_learn(user, Test.translate_ru.value, session)
     options = await crud.get_random_words(len(word_list), session)
     options = list(set(options) - set(word_list))
     options = [word.word for word in options]
