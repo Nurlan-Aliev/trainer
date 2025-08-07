@@ -40,3 +40,11 @@
     height: 150px;
     width: 100px;
 }
+
+@media only screen and (max-width: 750px) {
+.vocab-container{
+    display: flex;
+    flex-direction:column;
+}
+
+}

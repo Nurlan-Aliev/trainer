@@ -66,7 +66,7 @@ function showWord() {
     }
 
     const word = words[currentIndex];
-    wordDisplay.textContent = word.translate_ru || '';
+    wordDisplay.textContent = word.word_ru || '';
     wordInput.value = '';
 }
 
