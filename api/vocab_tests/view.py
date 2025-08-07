@@ -3,7 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.vocab_tests import crud
 from api.vocab_tests.my_enum import Test
 from api.vocab_tests import schemas
-from api.vocab_tests.utils import crete_question_and_options
+from api.vocab_tests.utils import (
+    crete_question_and_options,
+)
 
 from auth.validator import is_current_token
 from database import db_helper
@@ -41,8 +43,8 @@ async def get_10_words_for_test(
         schemas.ConstructorSchema(
             id=to_learn.word_id,
             word=to_learn.word.word,
-            word_az=to_learn.word.word_az,
-            word_ru=to_learn.word.word_ru,
+            word_az=to_learn.word.translate_az,
+            word_ru=to_learn.word.translate_ru,
         )
         for to_learn in word_list
     ]
@@ -56,7 +58,18 @@ async def get_words_translate(
 ):
     word_list = await crud.get_10_word_for_learn(user, Test.translate_ru.value, session)
     options = await crud.get_random_words(len(word_list), session)
-    options = list(set(options) - set(word_list))
-    options = [word.word for word in options]
-    print(options)
-    return crete_question_and_options(list(word_list), options)
+    return crete_question_and_options(list(word_list), options, Test.translate_ru.value)
+
+
+@router.get("/reverse_translate")
+async def get_words_reverse_translate(
+    user: dict = Depends(is_current_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word_list = await crud.get_10_word_for_learn(
+        user, Test.reverse_translate_ru.value, session
+    )
+    options = await crud.get_random_words(len(word_list), session)
+    return crete_question_and_options(
+        list(word_list), options, Test.reverse_translate_ru.value
+    )

@@ -1,18 +1,39 @@
 from random import sample, shuffle
+
+from api.models import WordsToLearn, Word
+from api.vocab_tests.my_enum import Test
 from api.vocab_tests.schemas import TranslateSchemas
 
 
-def crete_question_and_options(first: list, second: list):
+def question(word: Word, test: Test):
+    if test == Test.translate_ru.value:
+        return word.word
+    else:
+        return word.translate_ru
+
+
+def answer(word: Word, test: Test):
+    if test == Test.translate_ru.value:
+        return word.translate_ru
+    else:
+        return word.word
+
+
+def crete_question_and_options(
+    first: list[WordsToLearn], second: list[Word], test: Test
+):
+
+    second = [question(word, test) for word in second]
     result = []
 
     for word in first:
-
-        random_choices = sample(second, 3)
-        new_list = [word.word.word] + random_choices
+        available = list(set(second) - {question(word.word, test)})
+        random_choices = sample(available, 3)
+        new_list = [question(word.word, test)] + random_choices
         shuffle(new_list)
         new_question = TranslateSchemas(
             word_id=word.word_id,
-            word_ru=word.word.translate_ru,
+            question=answer(word.word, test),
             options=new_list,
         )
         result.append(new_question)

@@ -63,7 +63,16 @@ def translate(
     request: Request,
     user: dict | None = Depends(is_user_logged_in),
 ):
-    pass
+    if not user:
+        redirect_url = request.url_for("sign_in")
+        return RedirectResponse(redirect_url)
+    return settings.templates.TemplateResponse(
+        "vocab_tests/translate.html",
+        {
+            "user": user,
+            "request": request,
+        },
+    )
 
 
 @router.get("/rev_translate")
@@ -71,4 +80,13 @@ def rev_translate(
     request: Request,
     user: dict | None = Depends(is_user_logged_in),
 ):
-    pass
+    if not user:
+        redirect_url = request.url_for("sign_in")
+        return RedirectResponse(redirect_url)
+    return settings.templates.TemplateResponse(
+        "vocab_tests/rev_translate.html",
+        {
+            "user": user,
+            "request": request,
+        },
+    )

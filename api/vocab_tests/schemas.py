@@ -15,5 +15,5 @@ class ConstructorSchema(BaseModel):
 
 class TranslateSchemas(BaseModel):
     word_id: int
-    word_ru: str
+    question: str
     options: list[str]
