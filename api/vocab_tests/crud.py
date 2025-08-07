@@ -70,12 +70,11 @@ async def is_learned(
 
 
 async def get_10_word_for_learn(
-    user_email: str, test: Test, session: AsyncSession
+    user: dict, test: Test, session: AsyncSession
 ) -> Sequence[WordsToLearn]:
     """
     get 10 random words which is not learned
     """
-    user = await get_user(user_email, session)
     subquery = select(1).where(
         and_(
             UserWordTestResult.word_id == WordsToLearn.word_id,
@@ -87,10 +86,16 @@ async def get_10_word_for_learn(
         select(WordsToLearn)
         .options(selectinload(WordsToLearn.word))
         .where(~exists(subquery))
-        .where(WordsToLearn.user_id == user.id)
+        .where(WordsToLearn.user_id == user["id"])
         .order_by(func.random())
         .limit(10)
     )
     result = await session.scalars(stmt)
     words = result.all()
     return words
+
+
+async def get_random_words(limit: int, session: AsyncSession):
+    stmt = select(Word).limit(limit * 4)
+    words_list = await session.scalars(stmt)
+    return words_list.all()
