@@ -3,7 +3,7 @@ const sessionSize = 10;
 let currentIndex = 0;
 let words = [];
 
-// селекторы под новые классы
+
 const wordInput = document.querySelector('.word-input');
 const checkBtn = document.querySelector('#check');
 const sendBtn = document.querySelector('#send');
@@ -12,7 +12,7 @@ const wordDisplay = document.querySelector('.word-display');
 const spell = document.querySelector('.spell');
 const infoBlock = document.querySelector('.info-block');
 
-// создаём блоки с ошибкой и ответами
+
 const error = document.createElement("div");
 error.classList.add('error');
 spell.append(error);
@@ -36,14 +36,16 @@ async function getArray(url) {
     return array;
 }
 
-function sendWord(data, url) {
-    fetch(url, {
+async function sendWord(data, url) {
+    const response = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
     });
+    const correct_answer = await response.json();
+    return correct_answer
 }
 
 function showWord() {
@@ -80,31 +82,34 @@ nextSessionContainer.addEventListener('click', async () => {
     showWord();
 });
 
-checkBtn.addEventListener('click', () => {
+checkBtn.addEventListener('click', async () => {
     const answer = wordInput.value.trim();
     const wordData = words[currentIndex];
-
-    const data = {
-        answer: answer,
-        id: wordData.id
-    };
-
+    
     if (!answer) {
         error.textContent = `Write answer maaaan!!!`;
         return;
     }
+    error.textContent = ``;
 
-    error.textContent = '';
+    const data = {
+        user_answer: answer,
+        word_id: wordData.word_id
+    };
 
-    if (answer !== wordData.word) {
+    const correct_answer = await sendWord(data, `${api}/api/test?test_type=spelling`);
+
+    if (answer !== correct_answer) {
+
         wordInput.style.display = 'none';
-        correctAnswer.textContent = wordData.word;
+        correctAnswer.textContent = correct_answer;
         userAnswer.textContent = answer;
     } else {
+
         wordInput.style.display = 'none';
-        correctAnswer.textContent = answer;
-        sendWord(data, `${api}/api/test?test_type=spelling`);
+        correctAnswer.textContent = correct_answer;
     }
+
 
     sendBtn.style.display = 'inline-block';
     checkBtn.style.display = 'none';
