@@ -1,6 +1,7 @@
 .card-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
@@ -132,4 +133,11 @@
     display: flex;
     margin-top: 0;
     justify-content: center;
+}
+
+.options_btn{
+    background-color: #007BFF;
+    margin: 5px;
+    font-size: 25px;
+
 }

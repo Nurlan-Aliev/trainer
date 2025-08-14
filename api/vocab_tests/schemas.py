@@ -2,13 +2,12 @@ from pydantic import BaseModel
 
 
 class TestSchema(BaseModel):
-    answer: str
-    id: int
+    user_answer: str
+    word_id: int
 
 
 class ConstructorSchema(BaseModel):
-    id: int
-    word: str
+    word_id: int
     word_ru: str | None = None
     word_az: str | None = None
 

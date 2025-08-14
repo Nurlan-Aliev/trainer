@@ -16,17 +16,18 @@ router = APIRouter(tags=["vocab_test"])
 
 @router.post("/test")
 async def make_vocab_test(
-    answer: schemas.TestSchema,
+    data: schemas.TestSchema,
     test_type: Test,
     user: dict | None = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    user_word_link = await crud.get_word(answer.id, user["id"], session)
-    if not user_word_link:
+    correct_wrod = await crud.get_word(data.word_id, user["id"], session)
+    if not correct_wrod:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    if answer.answer.lower() == user_word_link.word.word:
-        return await crud.add_test_in_db(user_word_link.word, user, test_type, session)
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    if data.user_answer.lower() == correct_wrod.word.word:
+        await crud.add_test_in_db(correct_wrod.word, user, test_type, session)
+        return correct_wrod.word.word
+    return correct_wrod.word.word
 
 
 @router.get("/constructor")
@@ -41,8 +42,7 @@ async def get_10_words_for_test(
     word_list = await crud.get_10_word_for_learn(user, Test.spelling.value, session)
     data = [
         schemas.ConstructorSchema(
-            id=to_learn.word_id,
-            word=to_learn.word.word,
+            word_id=to_learn.word_id,
             word_az=to_learn.word.translate_az,
             word_ru=to_learn.word.translate_ru,
         )
