@@ -63,6 +63,7 @@ def translate(
     request: Request,
     user: dict | None = Depends(is_user_logged_in),
 ):
+
     if not user:
         redirect_url = request.url_for("sign_in")
         return RedirectResponse(redirect_url)
@@ -70,6 +71,9 @@ def translate(
         "vocab_tests/translate.html",
         {
             "user": user,
+            "title": "Translate",
+            "api": f"{settings.WORKING_HOST}/api/translate",
+            "test_api": f"{settings.WORKING_HOST}/api/test?test_type=translate_ru",
             "request": request,
         },
     )
@@ -84,9 +88,12 @@ def rev_translate(
         redirect_url = request.url_for("sign_in")
         return RedirectResponse(redirect_url)
     return settings.templates.TemplateResponse(
-        "vocab_tests/rev_translate.html",
+        "vocab_tests/translate.html",
         {
             "user": user,
+            "title": "Reverse Translate",
+            "api": f"{settings.WORKING_HOST}/api/reverse_translate",
+            "test_api": f"{settings.WORKING_HOST}/api/test?test_type=reverse_translate_ru",
             "request": request,
         },
     )

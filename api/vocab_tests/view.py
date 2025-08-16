@@ -21,13 +21,17 @@ async def make_vocab_test(
     user: dict | None = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    correct_wrod = await crud.get_word(data.word_id, user["id"], session)
-    if not correct_wrod:
+    word_data = await crud.get_word(data.word_id, user["id"], session)
+    if not word_data:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    if data.user_answer.lower() == correct_wrod.word.word:
-        await crud.add_test_in_db(correct_wrod.word, user, test_type, session)
-        return correct_wrod.word.word
-    return correct_wrod.word.word
+    correct_word = (
+        word_data.word.word
+        if test_type == Test.translate_ru
+        else word_data.word.translate_ru
+    )
+    if data.user_answer.lower() == correct_word:
+        await crud.add_test_in_db(word_data, user, test_type, session)
+    return correct_word
 
 
 @router.get("/constructor")

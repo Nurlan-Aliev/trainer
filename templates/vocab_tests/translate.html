@@ -9,7 +9,7 @@
 
 
 <div class="card-container">
-    <h1>Translate</h1>
+    <h1>{{ title }}</h1>
 
     <div class="word-card">
         <div class="word-display"></div>
@@ -40,5 +40,11 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    window.appData = {
+        my_api: "{{ api }}",
+        test_api: "{{ test_api }}"
+    };
+</script>
 <script type="module" src="/static/vocab_tests/translate.js"></script>
 {% endblock %}

@@ -1,10 +1,10 @@
-const api = `http://127.0.0.1:8000`;
+const api = window.appData.my_api
+const test_api = window.appData.test_api
 const sessionSize = 10;
 let currentIndex = 0;
 let words = [];
 
 let userAnswer = ''
-
 const sendBtn = document.querySelector('#send');
 const nextSessionContainer = document.querySelector('.next-session-button');
 const wordDisplay = document.querySelector('.word-display');
@@ -69,8 +69,7 @@ function showWord() {
                 user_answer: element,
                 word_id: word.word_id
             };
-
-            const correctWord = await sendWord(data, `${api}/api/test?test_type=translate_ru`);
+            const correctWord = await sendWord(data, test_api);
             if (element === correctWord) {
                 btn.style.backgroundColor = "lightgreen";
             } else {
@@ -95,14 +94,14 @@ sendBtn.addEventListener('click', () => {
 });
 
 nextSessionContainer.addEventListener('click', async () => {
-    words = await getArray(`${api}/api/translate`);
+    words = await getArray(api);
     currentIndex = 0;
     nextSessionContainer.style.display = 'none';
     showWord();
 });
 
 async function start() {
-    words = await getArray(`${api}/api/translate`);
+    words = await getArray(api);
     showWord();
 }
 
