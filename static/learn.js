@@ -4,9 +4,9 @@ let count         = 0
 let currentIndex  = 0;
 let words         = [];
 
-const statsEl   = document.getElementById('stats');
-const wordEl    = document.getElementById('word');
-const transEl   = document.getElementById('trans');
+const statsEl   = document.querySelector('#stats');
+const wordEl    = document.querySelector('#word');
+const transEl   = document.querySelector('#trans');
 const knowBtn   = document.querySelector('.i_know');
 const learnBtn  = document.querySelector('.to_learn');
 const nextSession  = document.querySelector('.next-session');
@@ -40,8 +40,8 @@ function showWord() {
   }
 
   const word = words[currentIndex];
-  wordEl.textContent = word.word;
-  transEl.textContent = word.translate_ru ? word.translate_ru: ' ' ;
+  wordEl.textContent = word.word_en;
+  transEl.textContent = word.word_ru ? word.word_ru: ' ' ;
 }
 
 nextSession.addEventListener('click', async() =>  {

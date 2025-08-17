@@ -1,5 +1,5 @@
 from typing import Sequence
-from sqlalchemy import select, func, and_, exists
+from sqlalchemy import select, func, and_, exists, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.models import Word, LearnedWord, WordsToLearn
 from api.vocab_tests.models import UserWordTestResult
@@ -65,8 +65,8 @@ async def is_learned(
     if test_count == COUNT_OF_TEST:
         stmt = LearnedWord(user_id=user["id"], word_id=word.id)
         session.add(stmt)
-        stmt = WordsToLearn(user_id=user["id"], word_id=word.id)
-        await session.delete(stmt)
+        await clean_data(WordsToLearn, word, user, session)
+        await clean_data(UserWordTestResult, word, user, session)
 
 
 async def get_10_word_for_learn(
@@ -99,3 +99,10 @@ async def get_random_words(limit: int, session: AsyncSession):
     stmt = select(Word).limit(limit * 4)
     words_list = await session.scalars(stmt)
     return words_list.all()
+
+
+async def clean_data(model, word: Word, user: dict, session: AsyncSession):
+    stmt = (
+        delete(model).where(model.user_id == user["id"]).where(model.word_id == word.id)
+    )
+    await session.execute(stmt)

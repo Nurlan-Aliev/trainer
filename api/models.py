@@ -4,9 +4,9 @@ from database import Base
 
 
 class Word(Base):
-    word: Mapped[str]
-    translate_ru: Mapped[str] = mapped_column(nullable=True)
-    translate_az: Mapped[str] = mapped_column(nullable=True)
+    word_en: Mapped[str]
+    word_ru: Mapped[str] = mapped_column(nullable=True)
+    word_az: Mapped[str] = mapped_column(nullable=True)
     word_to_learn = relationship("WordsToLearn", back_populates="word")
 
 

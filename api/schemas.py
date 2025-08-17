@@ -2,9 +2,9 @@ from pydantic import BaseModel
 
 
 class BaseWord(BaseModel):
-    word: str
-    translate_ru: str | None = None
-    translate_az: str | None = None
+    word_en: str
+    word_ru: str | None = None
+    word_az: str | None = None
 
 
 class WordSchemas(BaseWord):

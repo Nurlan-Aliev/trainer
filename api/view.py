@@ -25,9 +25,9 @@ async def get_10_words(
     return [
         schemas.WordSchemas(
             id=word.id,
-            word=word.word,
-            translate_az=word.translate_az,
-            translate_ru=word.translate_ru,
+            word_en=word.word_en,
+            word_az=word.word_az,
+            word_ru=word.word_ru,
         )
         for word in word_list
     ]

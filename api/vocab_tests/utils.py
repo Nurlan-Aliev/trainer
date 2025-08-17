@@ -7,16 +7,16 @@ from api.vocab_tests.schemas import TranslateSchemas
 
 def question(word: Word, test: Test):
     if test == Test.translate_ru.value:
-        return word.word
+        return word.word_en
     else:
-        return word.translate_ru
+        return word.word_ru
 
 
 def answer(word: Word, test: Test):
     if test == Test.translate_ru.value:
-        return word.translate_ru
+        return word.word_ru
     else:
-        return word.word
+        return word.word_en
 
 
 def crete_question_and_options(

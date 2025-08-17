@@ -78,9 +78,9 @@ async def add_new_word(word: schemas.BaseWord, session: AsyncSession) -> None:
     add new word
     """
     stmt = Word(
-        word=word.word,
-        translate_ru=word.translate_ru,
-        translate_az=word.translate_az,
+        word_en=word.word_en,
+        word_ru=word.word_ru,
+        word_az=word.word_az,
     )
     session.add(stmt)
     await session.commit()
@@ -92,20 +92,16 @@ async def update_word_db(
     """
     add translate for word
     """
-    stmt = select(Word).where(Word.word == update_data.word)
+    stmt = select(Word).where(Word.word_en == update_data.word_en)
 
     word_to_update = await session.scalar(stmt)
 
     word_to_update.translate_ru = (
-        update_data.translate_ru
-        if update_data.translate_ru
-        else word_to_update.translate_ru
+        update_data.word_ru if update_data.word_ru else word_to_update.word_ru
     )
 
     word_to_update.translate_az = (
-        update_data.translate_az
-        if update_data.translate_az
-        else word_to_update.translate_az
+        update_data.word_az if update_data.word_az else word_to_update.word_az
     )
     await session.commit()
     return word_to_update

@@ -26,9 +26,9 @@ async def make_vocab_test(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
     if test_type == Test.reverse_translate_ru:
-        correct_word = word_data.word.translate_ru
+        correct_word = word_data.word.word_ru
     else:
-        correct_word = word_data.word.word
+        correct_word = word_data.word.word_en
 
     if data.user_answer.lower() == correct_word:
         await crud.add_test_in_db(word_data.word, user, test_type, session)
@@ -48,8 +48,8 @@ async def get_10_words_for_test(
     data = [
         schemas.ConstructorSchema(
             word_id=to_learn.word_id,
-            word_az=to_learn.word.translate_az,
-            word_ru=to_learn.word.translate_ru,
+            word_az=to_learn.word.word_az,
+            word_ru=to_learn.word.word_ru,
         )
         for to_learn in word_list
     ]
