@@ -24,13 +24,14 @@ async def make_vocab_test(
     word_data = await crud.get_word(data.word_id, user["id"], session)
     if not word_data:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    correct_word = (
-        word_data.word.word
-        if test_type == Test.translate_ru
-        else word_data.word.translate_ru
-    )
+
+    if test_type == Test.reverse_translate_ru:
+        correct_word = word_data.word.translate_ru
+    else:
+        correct_word = word_data.word.word
+
     if data.user_answer.lower() == correct_word:
-        await crud.add_test_in_db(word_data, user, test_type, session)
+        await crud.add_test_in_db(word_data.word, user, test_type, session)
     return correct_word
 
 
