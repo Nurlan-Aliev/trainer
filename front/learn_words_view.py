@@ -36,6 +36,7 @@ def train_list(
         "vocab_tests/vocab_test_list.html",
         {
             "user": user,
+            "api": f"{settings.WORKING_HOST}",
             "request": request,
         },
     )
@@ -53,6 +54,7 @@ def constructor(
         "vocab_tests/constructor.html",
         {
             "user": user,
+            "api": f"{settings.WORKING_HOST}",
             "request": request,
         },
     )

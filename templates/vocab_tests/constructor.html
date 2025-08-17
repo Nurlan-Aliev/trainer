@@ -42,5 +42,10 @@
 {% endblock %}
 
 {% block script %}
+<script>
+    window.appData = {
+        my_api: "{{ api }}",
+    };
+</script>
 <script type="module" src="/static/vocab_tests/constructor.js"></script>
 {% endblock %}

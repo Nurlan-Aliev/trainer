@@ -1,4 +1,4 @@
-const api = `http://127.0.0.1:8000`;
+const api = window.appData.my_api
 const sessionSize = 10;
 let currentIndex = 0;
 let words = [];

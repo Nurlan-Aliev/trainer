@@ -27,5 +27,10 @@
 {% endblock %}
 
 {% block script %}
-<script src="/static/script.js"></script>
+<script>
+    window.appData = {
+        my_api: "{{ api }}",
+    };
+</script>
+<script src="/static/learn.js"></script>
 {% endblock %}
