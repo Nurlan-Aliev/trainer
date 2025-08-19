@@ -55,20 +55,20 @@ nextSession.addEventListener('click', async() =>  {
 )
 
 knowBtn.addEventListener('click', () => {
-  sendWord(words[currentIndex], `${api}/api/learned`)
+  sendWord(words[currentIndex], `/api/learned`)
   currentIndex++;
   showWord();
 });
 
 
 learnBtn.addEventListener('click', () => {
-  sendWord(words[currentIndex], `${api}/api/to_learn`)
+  sendWord(words[currentIndex], `/api/to_learn`)
   currentIndex++;
   showWord();
 });
 
 async function start() {
-  words = await getArray(`${api}/api/?skip=${count}`);
+  words = await getArray(`/api/?skip=${count}`);
   showWord();
 }
 
