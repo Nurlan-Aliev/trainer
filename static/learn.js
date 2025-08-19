@@ -1,4 +1,3 @@
-const api = window.appData.my_api
 const sessionSize = 10;
 let count         = 0
 let currentIndex  = 0;
@@ -64,7 +63,6 @@ knowBtn.addEventListener('click', () => {
 
 learnBtn.addEventListener('click', () => {
   sendWord(words[currentIndex], `${api}/api/to_learn`)
-  console.log(1)
   currentIndex++;
   showWord();
 });

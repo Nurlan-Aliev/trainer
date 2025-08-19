@@ -36,7 +36,6 @@ def train_list(
         "vocab_tests/vocab_test_list.html",
         {
             "user": user,
-            "api": f"{settings.WORKING_HOST}",
             "request": request,
         },
     )
@@ -54,7 +53,6 @@ def constructor(
         "vocab_tests/constructor.html",
         {
             "user": user,
-            "api": f"{settings.WORKING_HOST}",
             "request": request,
         },
     )
@@ -74,8 +72,8 @@ def translate(
         {
             "user": user,
             "title": "Translate",
-            "api": f"{settings.WORKING_HOST}/api/translate",
-            "test_api": f"{settings.WORKING_HOST}/api/test?test_type=translate_ru",
+            "api": f"/api/translate",
+            "test_api": f"/api/test?test_type=translate_ru",
             "request": request,
         },
     )
@@ -94,8 +92,8 @@ def rev_translate(
         {
             "user": user,
             "title": "Reverse Translate",
-            "api": f"{settings.WORKING_HOST}/api/reverse_translate",
-            "test_api": f"{settings.WORKING_HOST}/api/test?test_type=reverse_translate_ru",
+            "api": f"/api/reverse_translate",
+            "test_api": f"/api/test?test_type=reverse_translate_ru",
             "request": request,
         },
     )

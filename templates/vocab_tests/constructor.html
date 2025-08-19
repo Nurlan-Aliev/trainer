@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Constructor</title>
+<title>Trainer</title>
 <link rel="stylesheet" href="/static/vocab_tests/constructor.css">
 {% endblock %}
 
@@ -42,10 +42,5 @@
 {% endblock %}
 
 {% block script %}
-<script>
-    window.appData = {
-        my_api: "{{ api }}",
-    };
-</script>
 <script type="module" src="/static/vocab_tests/constructor.js"></script>
 {% endblock %}

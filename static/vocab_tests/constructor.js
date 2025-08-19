@@ -1,4 +1,3 @@
-const api = window.appData.my_api
 const sessionSize = 10;
 let currentIndex = 0;
 let words = [];
@@ -73,7 +72,7 @@ function showWord() {
 }
 
 nextSessionContainer.addEventListener('click', async () => {
-    words = await getArray(`${api}/api/constructor`);
+    words = await getArray(`/api/constructor`);
 
     currentIndex = 0;
     wordInput.style.display = 'inline-block';
@@ -97,7 +96,7 @@ checkBtn.addEventListener('click', async () => {
         word_id: wordData.word_id
     };
 
-    const correct_answer = await sendWord(data, `${api}/api/test?test_type=spelling`);
+    const correct_answer = await sendWord(data, `/api/test?test_type=spelling`);
 
     if (answer !== correct_answer) {
 
@@ -127,7 +126,7 @@ sendBtn.addEventListener('click', () => {
 });
 
 async function start() {
-    words = await getArray(`${api}/api/constructor`);
+    words = await getArray(`/api/constructor`);
     showWord();
 }
 
