@@ -6,16 +6,18 @@
     justify-content: center;
     height: 100vh;
     margin: 0;
-    width: 600px;
+    width: 400px;
 }
 
 .word-card {
+
     background-color: white;
     padding: 40px;
     border-radius: 20px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
     text-align: center;
     max-width: 400px;
+    height: 270px;
     width: 90%;
 }
 
@@ -135,9 +137,25 @@
     justify-content: center;
 }
 
-.options_btn{
+.options_btn {
     background-color: #007BFF;
     margin: 5px;
     font-size: 25px;
 
+}
+
+
+@media only screen and (max-width: 750px) {
+    .card-container {
+        width: 370px;
+    }
+
+    .word-card {
+        width: 350px;
+        padding: 10px;
+    }
+
+    .options_btn {
+        margin: 10px;
+    }
 }
