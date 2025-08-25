@@ -6,7 +6,7 @@ from api.routers import router as api_router
 from auth.views import router as auth_router
 from front.routers import router as front_router
 
-app = FastAPI()
+app = FastAPI(openapi_url=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 

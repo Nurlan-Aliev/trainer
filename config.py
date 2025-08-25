@@ -14,7 +14,6 @@ class Settings(BaseSettings):
     DB_HOST: str
 
     SECRET_KEY: str
-    WORKING_HOST: str
 
     access_token_expire_min: int = 36000
     algorithm: str = "HS256"
