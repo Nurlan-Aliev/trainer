@@ -1,0 +1,8 @@
+.tg-link{
+    font-style:italic;
+    transition:0.5s;
+}
+
+.tg-link:hover{
+    color:blue;
+}
