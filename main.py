@@ -6,7 +6,7 @@ from front.routers import router as front_router
 from config import settings
 
 
-app = FastAPI(docs_url="/docs" if settings.DEBUG else None, redoc_url=None)
+app = FastAPI(openapi_url="/openapi.json" if settings.DEBUG else None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
