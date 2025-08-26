@@ -86,3 +86,11 @@ def is_user_logged_in(
     if not token:
         return None
     return get_current_token_payload(token)
+
+
+def is_admin(request: Request):
+    token = request.cookies.get("access_token")
+    payload = get_current_token_payload(token)
+    if payload["status"] == "admin":
+        return payload
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)

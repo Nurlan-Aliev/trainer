@@ -45,7 +45,7 @@ function showWord() {
 
 nextSession.addEventListener('click', async() =>  {
   count = count + 10
-  words = await getArray(`${api}/api/?skip=${count}`)
+  words = await getArray(`/api/?skip=${count}`)
   currentIndex = 0;
   knowBtn.style.display = 'inline-block';
   learnBtn.style.display = 'inline-block';
