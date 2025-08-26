@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Request, Depends
 from auth.validator import is_user_logged_in
-
-
 from config import settings
 
 
