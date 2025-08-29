@@ -46,13 +46,17 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 40px 0;
+    margin: 20px 0;
 }
 
 .eye-image-re-pass,
 .eye-image-pass {
     width: 30px;
     height: 30px;
+    
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 .input-data-container {
@@ -67,7 +71,8 @@ form {
 }
 
 
-.errorPassword{
+.errorBox{
     color:red;
-    font-size: 23px;
+    font-size: 18px;
+    text-align: center;
 }

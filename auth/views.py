@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, Request
+from fastapi import APIRouter, Depends, status, Response, HTTPException, Request
 from fastapi.security import HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from auth.schemas import UserAuthSchema
@@ -14,24 +14,23 @@ http_bearer = HTTPBearer(auto_error=False)
 router = APIRouter(dependencies=[Depends(http_bearer)])
 
 
-@router.post("/sign_in", response_class=RedirectResponse)
+@router.post("/sign_in")
 async def auth_user_issue_jwt(
-    request: Request,
+    response: Response,
     login: EmailStr = Form(),
     password: str = Form(),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-
     user = await validator.auth_user(login, password, session)
     if not user:
-        redirect_url = request.url_for("sign_in")
-        return RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
-    return sign_in(request, user)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    
+    return sign_in(response, user) 
 
 
 @router.post("/sign_up")
-def sign_up(request: Request, user: UserAuthSchema = Depends(create_user)):
-    return sign_in(request, user)
+def sign_up(response: Response, user: UserAuthSchema = Depends(create_user)):
+    return sign_in(response, user)
 
 
 @router.get("/sign_out")

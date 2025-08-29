@@ -1,6 +1,5 @@
 {% extends "auth/auth_base.html" %}
 {% block head %}
-<title>Sign In</title>
 <link rel="stylesheet" href="/static/auth/auth.css">
 {% endblock %}
 
@@ -32,12 +31,12 @@
 
 
     <button type="submit" class="submit-button" onclick="return checkPasswordMatch()">Sign up</button>
-    <p class="errorPassword" ></p>
+    <p class="errorBox" ></p>
 </form>
 
 
 {% endblock %}
 
 {% block script %}
-<script src="/static/auth/sign_up.js"></script>
+<script src="/static/auth/auth.js"></script>
 {% endblock %}
