@@ -82,7 +82,7 @@ nextSessionContainer.addEventListener('click', async () => {
 });
 
 checkBtn.addEventListener('click', async () => {
-    const answer = wordInput.value.trim();
+    const answer = wordInput.value.trim().toLowerCase();
     const wordData = words[currentIndex];
     
     if (!answer) {
