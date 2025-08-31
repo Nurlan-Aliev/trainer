@@ -1,5 +1,5 @@
 from typing import Sequence
-from sqlalchemy import select, exists, and_
+from sqlalchemy import select, exists, and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models import Word, LearnedWord, WordsToLearn
@@ -70,3 +70,10 @@ async def insert_word(
     )
     session.add(added_word)
     await session.commit()
+
+
+async def get_count_word(user:dict ,session:AsyncSession):
+    word_count= func.count(LearnedWord.user_id)
+    count = select(word_count).filter(LearnedWord.user_id == user['id'])
+    
+    return await session.scalar(count)

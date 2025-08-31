@@ -59,3 +59,11 @@ async def to_learn_word(
     user = await get_user(user["email"], session)
     if not await crud.get_word_to_learn(word, user, LearnedWord, session):
         await crud.insert_word(word, user, WordsToLearn, session)
+
+
+@router.get('/learned_word_count')
+async def learned_word_count(
+    user: dict | None = Depends(is_current_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+    ):
+    return await crud.get_count_word(user, session)

@@ -10,3 +10,19 @@
 .tg-link:hover{
     color:blue;
 }
+
+.word-count{
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+}
+
+.word-count__count,
+.word-count__text{
+    font-size: 22px;
+    margin: 0 5px;
+}
+
+/* .word-count__count{
+    font-size: 24px;
+} */
