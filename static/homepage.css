@@ -23,6 +23,7 @@
     margin: 0 5px;
 }
 
-/* .word-count__count{
-    font-size: 24px;
-} */
+.text{
+    text-align: center;
+    font-size:25px;
+}
