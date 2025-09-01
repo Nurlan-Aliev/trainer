@@ -6,14 +6,14 @@ from api.vocab_tests.schemas import TranslateSchemas
 
 
 def question(word: Word, test: Test):
-    if test == Test.translate_ru.value:
+    if test == Test.translate.value:
         return word.word_en
     else:
         return word.word_ru
 
 
 def answer(word: Word, test: Test):
-    if test == Test.translate_ru.value:
+    if test == Test.translate.value:
         return word.word_ru
     else:
         return word.word_en

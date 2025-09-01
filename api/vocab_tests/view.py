@@ -25,7 +25,7 @@ async def make_vocab_test(
     if not word_data:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
-    if test_type == Test.reverse_translate_ru:
+    if test_type == Test.reverse_translate:
         correct_word = word_data.word.word_ru
     else:
         correct_word = word_data.word.word_en
@@ -61,9 +61,9 @@ async def get_words_translate(
     user: dict = Depends(is_current_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    word_list = await crud.get_10_word_for_learn(user, Test.translate_ru.value, session)
+    word_list = await crud.get_10_word_for_learn(user, Test.translate.value, session)
     options = await crud.get_random_words(len(word_list), session)
-    return crete_question_and_options(list(word_list), options, Test.translate_ru.value)
+    return crete_question_and_options(list(word_list), options, Test.translate.value)
 
 
 @router.get("/reverse_translate")
@@ -72,9 +72,9 @@ async def get_words_reverse_translate(
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     word_list = await crud.get_10_word_for_learn(
-        user, Test.reverse_translate_ru.value, session
+        user, Test.reverse_translate.value, session
     )
     options = await crud.get_random_words(len(word_list), session)
     return crete_question_and_options(
-        list(word_list), options, Test.reverse_translate_ru.value
+        list(word_list), options, Test.reverse_translate.value
     )
