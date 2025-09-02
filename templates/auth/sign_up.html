@@ -5,7 +5,7 @@
 
 {% block h1 %}<h1 class="name">Sign up</h1>{% endblock %}
 {% block card %}
-<form action="/auth/sign_up" method="post">
+<form class="AuthForm">
 
     <div class="input-data-container">
         <input type="text" name="name" class="input_data" placeholder="Enter your name" required>
@@ -38,5 +38,6 @@
 {% endblock %}
 
 {% block script %}
+<script src="/static/auth/sign_up.js"></script>
 <script src="/static/auth/auth.js"></script>
 {% endblock %}
