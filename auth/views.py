@@ -8,6 +8,8 @@ from auth.crud import create_user
 from fastapi import Form
 from pydantic import EmailStr
 from fastapi.responses import RedirectResponse
+
+from auth.validator import is_current_token
 from database import db_helper
 
 http_bearer = HTTPBearer(auto_error=False)
@@ -24,8 +26,8 @@ async def auth_user_issue_jwt(
     user = await validator.auth_user(login, password, session)
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-    
-    return sign_in(response, user) 
+
+    return sign_in(response, user)
 
 
 @router.post("/sign_up")
@@ -39,3 +41,10 @@ def sign_out(request: Request):
     response = RedirectResponse(redirect_url, status_code=status.HTTP_303_SEE_OTHER)
     response.delete_cookie("access_token")
     return response
+
+
+@router.get("/me")
+def about_me(
+    user: dict | None = Depends(is_current_token),
+):
+    return user
