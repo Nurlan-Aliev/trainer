@@ -1,10 +1,9 @@
-from fastapi import status, Request, Response
+from fastapi import Response
 from auth.schemas import UserAuthSchema
 from auth import jwt_helper
-from fastapi.responses import RedirectResponse
 
 
-def sign_in(response:Response, user: UserAuthSchema):
+def sign_in(response: Response, user: UserAuthSchema):
 
     access_token = jwt_helper.create_jwt(user)
     response.set_cookie(
