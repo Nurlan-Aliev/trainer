@@ -15,7 +15,8 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str
     DEBUG: bool
-    access_token_expire_min: int = 36000
+    access_token_expire_min: int = 300
+    refresh_token_expire_min: int = 10080
     algorithm: str = "HS256"
 
     templates: Jinja2Templates = Jinja2Templates(directory="templates")
