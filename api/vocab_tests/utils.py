@@ -1,7 +1,7 @@
 from random import sample, shuffle
 
 from api.models import WordsToLearn, Word
-from api.vocab_tests.my_enum import Test
+from api.vocab_tests.word_test_enum import Test
 from api.vocab_tests.schemas import TranslateSchemas
 
 

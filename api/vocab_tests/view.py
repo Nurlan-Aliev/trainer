@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.vocab_tests import crud
-from api.vocab_tests.my_enum import Test
+from api.vocab_tests.word_test_enum import Test
 from api.vocab_tests import schemas
 from api.vocab_tests.utils import (
     crete_question_and_options,
