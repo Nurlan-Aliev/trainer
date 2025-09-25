@@ -1,11 +1,11 @@
 import jwt
+from pydantic import EmailStr
 from auth.jwt_helper import decode_jwt
 from auth.schemas import UserAuthSchema
-from auth.db_user import get_user
+from auth import crud
 from fastapi.security import HTTPBearer
 import bcrypt
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import db_helper
 from fastapi import HTTPException, status, Depends, Request
 
 
@@ -15,14 +15,12 @@ UNAUTHORIZED = HTTPException(
 http_bearer = HTTPBearer(auto_error=False)
 
 
-async def get_user_by_token_sub(
-    payload: dict, session: AsyncSession = Depends(db_helper.session_dependency)
-) -> UserAuthSchema:
+async def get_user_by_token_sub(payload: dict, session: AsyncSession) -> UserAuthSchema:
     """
     Returns the user by his sub
     """
-    email: str | None = payload.get("email")
-    if user := await get_user(email, session):
+    idx: int | None = payload.get("id")
+    if user := await crud.get_user_by_id(idx, session):
         return user
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -31,12 +29,11 @@ async def get_user_by_token_sub(
 
 
 async def auth_user(
-    login,
-    password,
-    session,
+    login: EmailStr,
+    password: str,
+    session: AsyncSession,
 ):
-
-    if not (user := await get_user(login, session)):
+    if not (user := await crud.get_user_by_email(login, session)):
         return None
     if not validate_password(password=password, hashed_password=user.password):
         return None
@@ -56,27 +53,42 @@ def hash_password(password: str) -> bytes:
     return bcrypt.hashpw(pwd_bytes, salt)
 
 
-def get_current_token_payload(
-    token: str | bytes,
-) -> dict:
+def get_current_token_payload(token: str | bytes, token_type: str) -> dict:
+    invalid_token = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED, detail=f"invalid token error"
+    )
     try:
         payload = decode_jwt(token=token)
+
+        if not payload.get("token_type") == token_type:
+            raise invalid_token
+
         return payload
+
     except jwt.exceptions.InvalidTokenError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail=f"invalid token error"
-        )
+        raise invalid_token
     except AttributeError:
         raise UNAUTHORIZED
 
 
-def is_current_token(
-    request: Request,
-) -> dict | None:
-    token = request.cookies.get("access_token")
+def is_current_access_token(token: HTTPBearer = Depends(http_bearer)) -> dict | None:
+    if not token.credentials:
+        raise UNAUTHORIZED
+    return get_current_token_payload(token.credentials, "access")
+
+
+def is_current_refresh_token(request: Request) -> dict | None:
+    token = request.cookies.get("refresh_token")
+    black_refresh_list = crud.get_black_list()
+
+    if token in black_refresh_list:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=f"invalid token error"
+        )
+
     if not token:
         raise UNAUTHORIZED
-    return get_current_token_payload(token)
+    return get_current_token_payload(token, "refresh")
 
 
 def is_user_logged_in(
@@ -85,12 +97,4 @@ def is_user_logged_in(
     token = request.cookies.get("access_token")
     if not token:
         return None
-    return get_current_token_payload(token)
-
-
-def is_admin(request: Request):
-    token = request.cookies.get("access_token")
-    payload = get_current_token_payload(token)
-    if payload["status"] == "admin":
-        return payload
-    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    return get_current_token_payload(token, "access")

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from api import crud, schemas
 from api.admin import crud
-from auth.validator import is_admin
+from auth.permissions import is_admin
 from database import db_helper
 
 

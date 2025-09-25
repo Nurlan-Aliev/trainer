@@ -7,7 +7,7 @@ from api.vocab_tests.utils import (
     crete_question_and_options,
 )
 
-from auth.validator import is_current_token
+from auth.validator import is_current_access_token
 from database import db_helper
 
 
@@ -18,7 +18,7 @@ router = APIRouter(tags=["vocab_test"])
 async def make_vocab_test(
     data: schemas.TestSchema,
     test_type: Test,
-    user: dict | None = Depends(is_current_token),
+    user: dict | None = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     word_data = await crud.get_word(data.word_id, user["id"], session)
@@ -37,7 +37,7 @@ async def make_vocab_test(
 
 @router.get("/constructor")
 async def get_10_words_for_test(
-    user: dict = Depends(is_current_token),
+    user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     """
@@ -58,7 +58,7 @@ async def get_10_words_for_test(
 
 @router.get("/translate")
 async def get_words_translate(
-    user: dict = Depends(is_current_token),
+    user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     word_list = await crud.get_10_word_for_learn(user, Test.translate.value, session)
@@ -68,7 +68,7 @@ async def get_words_translate(
 
 @router.get("/reverse_translate")
 async def get_words_reverse_translate(
-    user: dict = Depends(is_current_token),
+    user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
     word_list = await crud.get_10_word_for_learn(

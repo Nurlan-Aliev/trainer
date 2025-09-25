@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models import Word, LearnedWord, WordsToLearn
 from api import schemas
-from auth.crud import get_user
+from auth import crud
 from typing import Type
 
 from auth.models import User
@@ -16,7 +16,7 @@ async def get_10_words(
     """
     get 10 random words which is not learned
     """
-    user = await get_user(user_email, session)
+    user = await crud.get_user_by_email(user_email, session)
 
     subquery_learned = select(1).where(
         and_(
@@ -72,8 +72,8 @@ async def insert_word(
     await session.commit()
 
 
-async def get_count_word(user:dict ,session:AsyncSession):
-    word_count= func.count(LearnedWord.user_id)
-    count = select(word_count).filter(LearnedWord.user_id == user['id'])
-    
+async def get_count_word(user: dict, session: AsyncSession):
+    word_count = func.count(LearnedWord.user_id)
+    count = select(word_count).filter(LearnedWord.user_id == user["id"])
+
     return await session.scalar(count)
