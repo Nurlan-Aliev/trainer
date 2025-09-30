@@ -19,7 +19,7 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str
     DEBUG: bool
-    access_token_expire_min: int = 300
+    access_token_expire_min: int = 4
     refresh_token_expire_min: int = 10080
     algorithm: str = "HS256"
 
