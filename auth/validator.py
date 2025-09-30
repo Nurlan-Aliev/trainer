@@ -72,7 +72,7 @@ def get_current_token_payload(token: str | bytes, token_type: str) -> dict:
 
 
 def is_current_access_token(token: HTTPBearer = Depends(http_bearer)) -> dict | None:
-    if not token.credentials:
+    if not token:
         raise UNAUTHORIZED
     return get_current_token_payload(token.credentials, "access")
 
