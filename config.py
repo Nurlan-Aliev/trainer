@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import load_dotenv
-from starlette.templating import Jinja2Templates
 from redis import Redis
 
 load_dotenv()
@@ -22,8 +21,6 @@ class Settings(BaseSettings):
     access_token_expire_min: int = 4
     refresh_token_expire_min: int = 10080
     algorithm: str = "HS256"
-
-    templates: Jinja2Templates = Jinja2Templates(directory="templates")
 
     @property
     def db_connect(self):
