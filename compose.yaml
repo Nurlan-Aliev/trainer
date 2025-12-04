@@ -1,4 +1,20 @@
+networks:
+  app_network:
+
 services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"  # наружу только nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app_network
+
   database:
     container_name: database
     image: postgres
@@ -9,26 +25,43 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
     volumes:
-      - ./.postgres:/var/lib/postgresql/data
+      - ./.postgres:/var/lib/postgresql/18/main
+    networks:
+      - app_network
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ../trainer_front
+    networks:
+      - app_network
 
 
   backend:
     container_name: backend
     build:
-      .
+      context: .
     depends_on:
       - database
+      - redis
     volumes:
       - .:/myapp
-    ports:
-      - "80:8000"
+#    ports:
+#      - "80:8000"
     restart: always
     env_file:
       - .env
     entrypoint: ./entrypoint.sh
+    networks:
+      - app_network
 
   redis:
     container_name: redis
     image: redis:latest
+    restart: always
     volumes:
       - ./redis_data:/data
+#    ports:
+#      - 6379:6379
+    networks:
+      - app_network
