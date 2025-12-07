@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from api.vocab_tests import crud_learned
 from api.vocab_tests import crud
 from api.vocab_tests.word_test_enum import Test
 from api.vocab_tests import schemas
@@ -78,3 +79,35 @@ async def get_words_reverse_translate(
     return crete_question_and_options(
         list(word_list), options, Test.rev_translate.value
     )
+
+
+@router.get("/remember")
+async def get_words_reverse_translate(
+    user: dict = Depends(is_current_access_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word_list = await crud_learned.get_10_learned_word(user, session)
+
+    data = [
+        schemas.ConstructorSchema(
+            word_id=to_learn.word_id,
+            word_en=to_learn.learned_word.word_en,
+            word_az=to_learn.learned_word.word_az,
+            word_ru=to_learn.learned_word.word_ru,
+        )
+        for to_learn in word_list
+    ]
+    return data
+
+
+@router.post("/remember")
+async def forgot_word(
+    word: schemas.ForgotRemember,
+    user: dict = Depends(is_current_access_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word_data = await crud_learned.get_word(word.word_id, user["id"], session)
+
+    if not word.remember:
+        await crud_learned.delete_from_learned_list(word.word_id, user, session)
+    return {'word_ru': word_data.learned_word.word_ru, 'word_az': word_data.learned_word.word_az}

@@ -39,9 +39,6 @@ async def learned_word(
     user: dict | None = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    """
-    get 10 word need to learn
-    """
     user = await auth_crud.get_user_by_email(user["email"], session)
     if not await api_crud.get_word_to_learn(word, user, LearnedWord, session):
         await api_crud.insert_word(word, user, LearnedWord, session)

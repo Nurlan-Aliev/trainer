@@ -37,7 +37,7 @@ async def update_word(
 
 
 @router.delete("/word")
-async def update_word(
+async def delete_word(
     update_data: schemas.WordSchemas,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):

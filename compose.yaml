@@ -6,7 +6,7 @@ services:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - "80:80"  # наружу только nginx
+      - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
@@ -32,7 +32,7 @@ services:
   frontend:
     container_name: frontend
     build:
-      context: ../trainer_front
+      context: ../trainer_front_copy
     networks:
       - app_network
 
@@ -46,8 +46,6 @@ services:
       - redis
     volumes:
       - .:/myapp
-#    ports:
-#      - "80:8000"
     restart: always
     env_file:
       - .env
@@ -61,7 +59,5 @@ services:
     restart: always
     volumes:
       - ./redis_data:/data
-#    ports:
-#      - 6379:6379
     networks:
       - app_network

@@ -39,7 +39,6 @@ async def update_word_db(
 
 
 async def delete_word(word: schemas.WordSchemas, session: AsyncSession):
-    select(Word).where(Word.id == word.id)
     word_obj = await session.scalar(select(Word).where(Word.id == word.id))
     if word_obj:
         await session.delete(word_obj)

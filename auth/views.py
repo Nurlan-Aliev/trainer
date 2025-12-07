@@ -62,7 +62,7 @@ async def sign_up(
 
 
 @router.post("/logout")
-def sign_out(request: Request):
+def logout(request: Request):
     token = request.cookies.get("refresh_token")
     if token:
         add_in_black_list(token)
