@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from api.vocab_tests.custom_enum import Language
 
 
 class BaseTestSchema(BaseModel):
@@ -7,6 +8,7 @@ class BaseTestSchema(BaseModel):
 
 class TestSchema(BaseTestSchema):
     user_answer: str
+    language: Language
 
 
 class ConstructorSchema(BaseTestSchema):
@@ -16,9 +18,9 @@ class ConstructorSchema(BaseTestSchema):
 
 
 class TranslateSchemas(BaseTestSchema):
-    question: str
-    options: list[str]
+    question: dict
+    options: list[dict]
 
 
-class ForgotRemember(BaseTestSchema):
+class Remember(BaseTestSchema):
     remember: bool

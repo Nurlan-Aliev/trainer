@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.models import Word, LearnedWord, WordsToLearn
 from api.vocab_tests.models import UserWordTestResult
 from sqlalchemy.orm import joinedload, selectinload
-from api.vocab_tests.word_test_enum import Test
+from api.vocab_tests.custom_enum import Test
 
 COUNT_OF_TEST = 3
 

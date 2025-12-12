@@ -1,6 +1,6 @@
 from sqlalchemy import ForeignKey, UniqueConstraint, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column
-from api.vocab_tests.word_test_enum import Test
+from api.vocab_tests.custom_enum import Test
 from database import Base
 
 

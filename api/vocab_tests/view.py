@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from api.vocab_tests import crud_learned
 from api.vocab_tests import crud
-from api.vocab_tests.word_test_enum import Test
+from api.vocab_tests.custom_enum import Test
 from api.vocab_tests import schemas
 from api.vocab_tests.utils import (
     crete_question_and_options,
@@ -15,29 +15,8 @@ from database import db_helper
 router = APIRouter(tags=["vocab_test"])
 
 
-@router.post("/test")
-async def make_vocab_test(
-    data: schemas.TestSchema,
-    test_type: Test,
-    user: dict | None = Depends(is_current_access_token),
-    session: AsyncSession = Depends(db_helper.session_dependency),
-):
-    word_data = await crud.get_word(data.word_id, user["id"], session)
-    if not word_data:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
-
-    if test_type == Test.rev_translate:
-        correct_word = word_data.word.word_ru
-    else:
-        correct_word = word_data.word.word_en
-
-    if data.user_answer.lower() == correct_word:
-        await crud.add_test_in_db(word_data.word, user, test_type, session)
-    return correct_word
-
-
 @router.get("/constructor")
-async def get_10_words_for_test(
+async def get_constructor(
     user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
@@ -57,7 +36,22 @@ async def get_10_words_for_test(
     return data
 
 
-@router.get("/translate")
+@router.post('/constructor')
+async def post_constructor(
+    data: schemas.TestSchema,
+    user: dict | None = Depends(is_current_access_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word = (await crud.get_word(data.word_id, user["id"], session)).word
+    if not word:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    if data.user_answer.lower() == word.word_en:
+        await crud.add_test_in_db(word, user, Test.constructor.value, session)
+    return word.word_en
+
+
+@router.get("/rev_translate")
 async def get_words_translate(
     user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
@@ -67,8 +61,24 @@ async def get_words_translate(
     return crete_question_and_options(list(word_list), options, Test.translate.value)
 
 
-@router.get("/rev_translate")
-async def get_words_reverse_translate(
+@router.post("/rev_translate")
+async def post_translate(
+    data: schemas.TestSchema,
+    user: dict | None = Depends(is_current_access_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word = (await crud.get_word(data.word_id, user["id"], session)).word
+    if not word:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    if data.user_answer.lower() == word.word_en:
+        await crud.add_test_in_db(word, user, Test.translate.value, session)
+
+    return word.word_en
+
+
+@router.get("/translate")
+async def get_rev_translate(
     user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
@@ -79,6 +89,22 @@ async def get_words_reverse_translate(
     return crete_question_and_options(
         list(word_list), options, Test.rev_translate.value
     )
+
+
+@router.post("/translate")
+async def post_rev_translate(
+    data: schemas.TestSchema,
+    user: dict | None = Depends(is_current_access_token),
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    word = (await crud.get_word(data.word_id, user["id"], session)).word
+    if not word:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+    correct_word = getattr(word, data.language.value)
+    if data.user_answer.lower() == correct_word:
+        await crud.add_test_in_db(word, user, Test.rev_translate.value, session)
+    return correct_word
 
 
 @router.get("/remember")
@@ -102,7 +128,7 @@ async def get_words_reverse_translate(
 
 @router.post("/remember")
 async def forgot_word(
-    word: schemas.ForgotRemember,
+    word: schemas.Remember,
     user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):

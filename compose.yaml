@@ -29,10 +29,11 @@ services:
     networks:
       - app_network
 
+
   frontend:
     container_name: frontend
     build:
-      context: ../trainer_front_copy
+      context: ../trainer_front
     networks:
       - app_network
 
