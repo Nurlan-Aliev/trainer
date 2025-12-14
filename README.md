@@ -97,15 +97,25 @@ Main tables:
 
 ## Running the Project
 
+To run the entire application using Docker Compose, the project should be organized as follows:
+```
+.
+├── frontend
+└── backend
+```
+
+The `docker-compose.yml` file expects both frontend and backend directories to be located at the same level.
+
+### Start
+
 ```bash
 docker compose up --build
 ```
-
 ---
 
 ## Author
 
 **Nurlan Aliev**  
 Python Backend Developer  
-GitHub: https://github.com/Nurlan-Aliev  
-LinkedIn: https://linkedin.com/in/nurlan-aliev/
+[GitHub](https://github.com/Nurlan-Aliev)  
+[LinkedIn](https://linkedin.com/in/nurlan-aliev/)
