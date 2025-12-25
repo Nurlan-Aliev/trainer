@@ -112,14 +112,14 @@ async def get_words_reverse_translate(
     user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    word_list = await crud_learned.get_10_learned_word(user, session)
+    word_list = await crud.get_10_word_for_learn(user,Test.remember.value, session)
 
     data = [
         schemas.ConstructorSchema(
             word_id=to_learn.word_id,
-            word_en=to_learn.learned_word.word_en,
-            word_az=to_learn.learned_word.word_az,
-            word_ru=to_learn.learned_word.word_ru,
+            word_en=to_learn.word.word_en,
+            word_az=to_learn.word.word_az,
+            word_ru=to_learn.word.word_ru,
         )
         for to_learn in word_list
     ]
@@ -128,12 +128,12 @@ async def get_words_reverse_translate(
 
 @router.post("/remember")
 async def forgot_word(
-    word: schemas.Remember,
+    data: schemas.Remember,
     user: dict = Depends(is_current_access_token),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    word_data = await crud_learned.get_word(word.word_id, user["id"], session)
+    word = (await crud.get_word(data.word_id, user["id"], session)).word
 
-    if not word.remember:
-        await crud_learned.delete_from_learned_list(word.word_id, user, session)
-    return {'word_ru': word_data.learned_word.word_ru, 'word_az': word_data.learned_word.word_az}
+    if data.remember:
+        await crud.add_test_in_db(word, user, Test.constructor.value, session)
+    return {'word_ru': word.learned_word.word_ru, 'word_az': word.learned_word.word_az}

@@ -6,7 +6,7 @@ from api.vocab_tests.models import UserWordTestResult
 from sqlalchemy.orm import joinedload, selectinload
 from api.vocab_tests.custom_enum import Test
 
-COUNT_OF_TEST = 3
+COUNT_OF_TEST = 4
 
 
 async def get_word(
