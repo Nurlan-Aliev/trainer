@@ -12,6 +12,18 @@ router = APIRouter(
 )
 
 
+@router.get("/word")
+async def get_word(
+    id: int,
+    session: AsyncSession = Depends(db_helper.session_dependency),
+):
+    """
+    get a word
+    """
+    word = await crud.get_word(id, session)
+    return {'word_en': word.word_en, 'word_ru': word.word_ru, 'word_az': word.word_az}
+
+
 @router.post("/word")
 async def add_word(
     word: schemas.BaseWord,
@@ -21,10 +33,14 @@ async def add_word(
     add a new words in the list
     """
     await crud.add_new_word(word, session)
-    return "word added"
+    return {
+        'word_en': word.word_en,
+        'word_ru': word.word_ru,
+        'word_az': word.word_az
+    }
 
 
-@router.patch("/word")
+@router.put("/word")
 async def update_word(
     update_data: schemas.WordSchemas,
     session: AsyncSession = Depends(db_helper.session_dependency),
@@ -33,12 +49,17 @@ async def update_word(
     update words
     """
     word = await crud.update_word_db(update_data, session)
-    return word
+    return {
+        'word_en': word.word_en,
+        'word_ru': word.word_ru,
+        'word_az': word.word_az
+    }
 
 
 @router.delete("/word")
 async def delete_word(
-    update_data: schemas.WordSchemas,
+    delete_data: schemas.WordSchemas,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
-    await crud.delete_word(update_data, session)
+    await crud.delete_word(delete_data, session)
+    return {'message': 'word was deleted'}
