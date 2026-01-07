@@ -135,4 +135,4 @@ async def forgot_word(
 
     if data.remember:
         await crud.add_test_in_db(word, user, Test.constructor.value, session)
-    return {'word_ru': word.learned_word.word_ru, 'word_az': word.learned_word.word_az}
+    return {'word_ru': word.word_ru, 'word_az': word.word_az}

@@ -79,19 +79,179 @@ Main tables:
 - GET `/auth/me`
 
 ### Vocabulary
-- GET `/api/`
-- POST `/api/to_learn`
-- GET `/api/learned`
-- GET `/api/learned_word_count`
+
+---
+- GET `/api/` => 
+  - Response
+  ```
+  list[
+    dict[
+      'id': int,
+      'word_en': str,
+      'word_ru': str,
+      'word_az': str
+    ]
+  ] 
+  ```
+---
+
+- POST `/api/to_learn` =>
+  
+  - Request body
+  ```
+  {
+    'id': int,
+    'word_en': str,
+    'word_ru': str,
+    'word_az': str
+  } 
+  ```
+  - Response
+  ```
+  {
+    None
+  }
+  ```
+---
+- GET `/api/learned`=>
+  
+  - Request body
+  ```
+  {
+    'id': int,
+    'word_en': str,
+    'word_ru': str,
+    'word_az': str
+  } 
+  ```
+  - Response
+  ```
+  {
+    None
+  }
+  ```
+---
+- GET `/api/learned_word_count`=>
+  - Response
+  ```
+  {
+    int
+  }
+  ```
+--- 
 
 ### Tests
-- POST `/api/constructor`
-- POST `/api/translate`
-- POST `/api/rev_translate`
-- POST `/api/remember`
+- GET `/api/constructor` => 
+  - Response
+  ```
+  list[
+    {
+      'id': int,
+      'word_ru': str,
+      'word_az': str
+    }
+  ] 
+  ```
+- GET `/api/translate` => 
+  - Response
+  ```
+  list[
+    {
+      word_id: int
+      question: {
+        'word_ru': word_ru,
+        'word_az': word_az
+      }
+      options: list[
+        {'word_en': word_en} * 4
+        ]
+    } * 10
+  ] 
+  ```
+  
+- GET `/api/rev_translate` => 
+  - Response
+  ```
+  list[
+    {
+      word_id: int
+      question: {'word_en': word_en }
+      options: list[{'word_ru': word.word_ru, 'word_az': word.word_az} *4 ]
+    } * 10
+  ]
+  ```
+- GET `/api/remember` => 
+  - Response
+  ```
+  list[
+    {
+      'id': int,
+      'word_en': str,
+      'word_ru': str,
+      'word_az': str
+    }
+  ] 
+  ```
+---
+
+- POST `/api/constructor` => `{word_en}`
+- POST `/api/translate` => `{word_en}`
+- POST `/api/rev_translate` => `{word_ru}`
+- POST `/api/remember` => `{word_en}`
 
 ### Admin
-- CRUD `/api/admin/word`
+- GET `/api/admin/word?id=int` => 
+```
+{
+'word_en': word.word_en,
+'word_ru': word.word_ru,
+'word_az': word.word_az
+}
+```
+- POST `/api/admin/word` => 
+```
+{
+'word_en': word_en,
+'word_ru': word_ru,
+'word_az': word_az
+}
+```
+- PUT `/api/admin/word`
+  - Request
+  ```
+  id: int
+  ```
+  - Response
+  ```
+  {
+  'word_en': word_en,
+  'word_ru': word_ru,
+  'word_az': word_az
+  }
+  ```
+- DELETE `/api/admin/word` 
+  - Request
+  ```
+    id: int
+  ```
+  - Response 
+  ```
+  {'message': 'word was deleted'}
+  ```
+  
+
+---
+## DATABASE
+
+* USERS
+
+* WORDS
+
+* LEARNED WORDS
+
+* WORDS TO LEARN
+
+* USER WORD TEST RESULT
 
 ---
 

@@ -13,7 +13,7 @@ async def get_word(
     word_idx: int,
     user_idx: int,
     session: AsyncSession,
-):
+) -> WordsToLearn:
 
     stmt = (
         select(WordsToLearn)

@@ -15,9 +15,9 @@ async def add_new_word(word: schemas.BaseWord, session: AsyncSession) -> None:
     add new word
     """
     stmt = Word(
-        word_en=word.word_en,
-        word_ru=word.word_ru,
-        word_az=word.word_az,
+        word_en=word.word_en.lower().strip(),
+        word_ru=word.word_ru.lower().strip(),
+        word_az=word.word_az.lower().strip(),
     )
     session.add(stmt)
     await session.commit()
